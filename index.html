@@ -3867,6 +3867,9 @@
             <a class="dash-link" onclick="switchDashTab('affiliate')"><i class="fas fa-users"></i><span>Affiliate</span></a>
             <a class="dash-link" onclick="switchDashTab('iot')"><i class="fas fa-network-wired"></i><span>IoT</span></a>
             <a class="dash-link" onclick="switchDashTab('api')"><i class="fas fa-code"></i><span>API Keys</span></a>
+            <!-- New Dashboard Tabs -->
+            <a class="dash-link" onclick="switchDashTab('chat')"><i class="fas fa-comment-dots"></i><span>Chat</span></a>
+            <a class="dash-link" onclick="switchDashTab('code')"><i class="fas fa-code"></i><span>Code</span></a>
           </div>
           <div class="dash-user">
             <div class="dash-user-avatar">JD</div>
@@ -4474,7 +4477,7 @@
     /* ============================================================
        ChangeX Neurix — scripts.js
        Complete interactive JS for the enterprise AI platform
-       (original code preserved, plus routing and enhancements)
+       (original code preserved, plus new dashboard features)
        ============================================================ */
 
     'use strict';
@@ -4493,6 +4496,22 @@
       adminTab: 'premiumTab',
       statsAnimated: false,
       user: { name: 'John Doe', plan: 'Pro', initials: 'JD' },
+      // New chat state
+      chat: {
+        conversations: [
+          { id: 1, title: 'Welcome chat', messages: [{ role: 'assistant', content: 'Hello! How can I help you today?' }] },
+          { id: 2, title: 'Project ideas', messages: [] }
+        ],
+        currentId: 1,
+        messageCount: 1, // track for limit
+        limit: 5
+      },
+      // New code state
+      code: {
+        language: 'javascript',
+        code: '// Write your code here\nconsole.log("Hello, Neurix!");',
+        output: ''
+      }
     };
 
     // ─── Router ────────────────────────────────────────────────
@@ -4500,25 +4519,18 @@
       pages: ['home', 'platform', 'ai-tools', 'pricing', 'dashboard', 'admin', 'model-gpt4'],
       current: 'home',
       navigate: function(page) {
-        // Hide all page containers
         document.querySelectorAll('.page-container').forEach(el => el.style.display = 'none');
-        // Show selected page
         const target = document.getElementById('page-' + page);
         if (target) {
           target.style.display = 'block';
           this.current = page;
-          // Update URL hash without jumping
           location.hash = page;
-          // Scroll to top
           window.scrollTo(0, 0);
-          // Re-trigger AOS for new page
           document.querySelectorAll('[data-aos]').forEach(el => {
             el.classList.remove('aos-animate');
             if (el.getBoundingClientRect().top < window.innerHeight - 60) el.classList.add('aos-animate');
           });
-          // Re-initialize page-specific features
           if (page === 'ai-tools') {
-            // Ensure default tab is active
             document.querySelectorAll('.tool-panel').forEach(p => p.classList.remove('active'));
             document.getElementById('imageTab').classList.add('active');
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -4530,13 +4542,11 @@
       }
     };
 
-    // Handle initial load and hash changes
     window.addEventListener('hashchange', () => {
       const page = location.hash.slice(1) || 'home';
       if (router.pages.includes(page)) router.navigate(page);
       else router.navigate('home');
     });
-    // Trigger initial navigation
     (function initRoute() {
       const page = location.hash.slice(1) || 'home';
       if (router.pages.includes(page)) router.navigate(page);
@@ -4548,7 +4558,6 @@
       const canvas = document.getElementById('neuralCanvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
-
       let nodes = [];
       let animFrame;
 
@@ -4575,7 +4584,6 @@
 
       const draw = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // Draw connections
         for (let i = 0; i < nodes.length; i++) {
           for (let j = i + 1; j < nodes.length; j++) {
             const dx = nodes[i].x - nodes[j].x;
@@ -4592,13 +4600,11 @@
             }
           }
         }
-        // Draw nodes
         nodes.forEach(n => {
           ctx.beginPath();
           ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(108,99,255,${n.opacity})`;
           ctx.fill();
-          // Move
           n.x += n.vx;
           n.y += n.vy;
           if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
@@ -4730,7 +4736,7 @@
       if (tabId === 'iotTab') startIoTSimulation();
     }
 
-    // ─── Image Generation Simulation (enhanced) ───────────────
+    // ─── Image Generation Simulation ──────────────────────────
     function simulateImageGen() {
       const btn = document.querySelector('#imageTab .btn-generate');
       const output = document.getElementById('imgOutput');
@@ -4829,7 +4835,7 @@
         .catch(() => showToast('Copied to clipboard!', 'success'));
     }
 
-    // ─── Audio Generation Simulation (with Web Audio) ─────────
+    // ─── Audio Generation Simulation ─────────────────────────
     function simulateAudioGen() {
       const btn = document.querySelector('#audioTab .btn-generate');
       const text = document.getElementById('ttsText').value;
@@ -5324,6 +5330,10 @@
       document.querySelectorAll('.dash-link').forEach(l => l.classList.remove('active'));
       document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
 
+      // Find the active link and add active class
+      const activeLink = Array.from(document.querySelectorAll('.dash-link')).find(l => l.textContent.includes(tab === 'overview' ? 'Overview' : tab.charAt(0).toUpperCase() + tab.slice(1)));
+      if (activeLink) activeLink.classList.add('active');
+
       const targetMap = {
         overview: 'overviewPanel',
         models: 'modelsPanel',
@@ -5335,23 +5345,24 @@
         api: 'apiPanel'
       };
 
-      // If panel exists, show it; else create dynamic panel (as original)
-      const panelId = targetMap[tab];
-      if (panelId && document.getElementById(panelId)) {
-        document.getElementById(panelId).classList.add('active');
+      if (targetMap[tab] && document.getElementById(targetMap[tab])) {
+        document.getElementById(targetMap[tab]).classList.add('active');
       } else {
-        // Create dynamic panel using original render functions
+        // Dynamic panels for chat and code
         const main = document.getElementById('dashMain');
         const existing = document.getElementById('dynamicPanel');
         if (existing) existing.remove();
 
-        const content = tab === 'models' ? renderModelsPanel() :
-                        tab === 'media' ? renderMediaPanel() :
-                        tab === 'automation' ? renderAutomationPanel() :
-                        tab === 'billing' ? renderBillingPanel() :
-                        tab === 'affiliate' ? renderAffiliatePanel() :
-                        tab === 'iot' ? renderIoTPanel() :
-                        tab === 'api' ? renderAPIPanel() : '';
+        let content = '';
+        if (tab === 'chat') content = renderChatPanel();
+        else if (tab === 'code') content = renderCodePanel();
+        else if (tab === 'models') content = renderModelsPanel();
+        else if (tab === 'media') content = renderMediaPanel();
+        else if (tab === 'automation') content = renderAutomationPanel();
+        else if (tab === 'billing') content = renderBillingPanel();
+        else if (tab === 'affiliate') content = renderAffiliatePanel();
+        else if (tab === 'iot') content = renderIoTPanel();
+        else if (tab === 'api') content = renderAPIPanel();
 
         const panel = document.createElement('div');
         panel.className = 'dash-panel active';
@@ -5367,6 +5378,211 @@
       updateDashTime();
     }
 
+    // New Chat Panel
+    function renderChatPanel() {
+      const current = state.chat.conversations.find(c => c.id === state.chat.currentId);
+      const messages = current ? current.messages : [];
+      return `
+        <div style="display: flex; height: 500px; background: rgba(255,255,255,0.02); border-radius: 12px; overflow: hidden;">
+          <!-- Sidebar -->
+          <div style="width: 220px; background: var(--dark-5); border-right: 1px solid var(--border); padding: 16px;">
+            <button onclick="newChat()" style="width:100%; background: rgba(108,99,255,0.2); border: 1px solid rgba(108,99,255,0.4); color: #a78bfa; padding: 10px; border-radius: 8px; cursor: pointer; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; justify-content: center;">
+              <i class="fas fa-plus"></i> New Chat
+            </button>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              ${state.chat.conversations.map(c => `
+                <div onclick="switchChat(${c.id})" style="cursor: pointer; background: ${c.id === state.chat.currentId ? 'rgba(108,99,255,0.2)' : 'transparent'}; padding: 10px; border-radius: 8px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-size: 0.9rem;">${c.title}</span>
+                  <i class="fas fa-trash" onclick="event.stopPropagation(); deleteChat(${c.id})" style="color: var(--text-muted); cursor: pointer;"></i>
+                </div>
+              `).join('')}
+            </div>
+            <div style="margin-top: 16px;">
+              <input type="text" placeholder="Search chats..." class="tool-input-sm" onkeyup="searchChats(this.value)" style="width:100%;">
+            </div>
+          </div>
+          <!-- Main Chat Area -->
+          <div style="flex: 1; display: flex; flex-direction: column; padding: 16px; background: var(--dark-4);">
+            <div style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; padding-right: 8px;" id="chatMessages">
+              ${messages.map(m => `
+                <div style="display: flex; gap: 12px; ${m.role === 'user' ? 'justify-content: flex-end;' : ''}">
+                  <div style="max-width: 70%; background: ${m.role === 'user' ? 'rgba(108,99,255,0.2)' : 'var(--dark-5)'}; border: 1px solid var(--border); border-radius: 12px; padding: 12px;">
+                    <p style="font-size: 0.9rem; margin: 0;">${m.content}</p>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+            <div style="display: flex; gap: 8px; margin-top: 16px;">
+              <textarea id="chatInput" class="tool-input" placeholder="Type your message..." style="min-height: 60px; resize: none; margin:0;"></textarea>
+              <div style="display: flex; flex-direction: column; gap: 4px;">
+                <button onclick="sendChatMessage()" class="btn-primary" style="padding: 10px;"><i class="fas fa-paper-plane"></i></button>
+                <button onclick="attachFile()" class="btn-sm" style="padding: 10px;"><i class="fas fa-paperclip"></i></button>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; margin-top: 8px;">
+              <button onclick="regenerateMessage()" class="btn-sm" style="flex:1;"><i class="fas fa-rotate"></i> Regenerate</button>
+              <button onclick="showReason()" class="btn-sm" style="flex:1;"><i class="fas fa-brain"></i> Reason</button>
+              <button onclick="copyLastMessage()" class="btn-sm" style="flex:1;"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // New Code Panel
+    function renderCodePanel() {
+      return `
+        <div style="display: flex; height: 500px; gap: 16px;">
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; gap: 8px;">
+              <select id="codeLanguage" class="tool-select-sm" style="width: 120px;" onchange="changeLanguage(this.value)">
+                <option value="javascript" ${state.code.language === 'javascript' ? 'selected' : ''}>JavaScript</option>
+                <option value="python" ${state.code.language === 'python' ? 'selected' : ''}>Python</option>
+                <option value="html" ${state.code.language === 'html' ? 'selected' : ''}>HTML</option>
+                <option value="css" ${state.code.language === 'css' ? 'selected' : ''}>CSS</option>
+              </select>
+              <button onclick="runCode()" class="btn-primary" style="padding: 8px 16px;"><i class="fas fa-play"></i> Run</button>
+              <button onclick="debugCode()" class="btn-sm" style="flex:0;"><i class="fas fa-bug"></i> Debug</button>
+              <button onclick="compileCode()" class="btn-sm" style="flex:0;"><i class="fas fa-gear"></i> Compile</button>
+            </div>
+            <textarea id="codeEditor" class="tool-input" style="flex: 1; font-family: monospace; min-height: 300px;">${state.code.code}</textarea>
+          </div>
+          <div style="width: 300px; background: var(--dark-5); border: 1px solid var(--border); border-radius: 12px; padding: 16px;">
+            <h4 style="font-size: 0.9rem; margin-bottom: 12px;">Output</h4>
+            <pre id="codeOutput" style="background: var(--dark-4); padding: 10px; border-radius: 8px; font-size: 0.8rem; min-height: 150px; overflow-y: auto;">${state.code.output}</pre>
+          </div>
+        </div>
+      `;
+    }
+
+    // Chat functions
+    function newChat() {
+      const newId = state.chat.conversations.length + 1;
+      state.chat.conversations.push({ id: newId, title: `Chat ${newId}`, messages: [] });
+      state.chat.currentId = newId;
+      state.chat.messageCount = 0;
+      switchDashTab('chat');
+      showToast('New chat created', 'success');
+    }
+
+    function deleteChat(id) {
+      state.chat.conversations = state.chat.conversations.filter(c => c.id !== id);
+      if (state.chat.currentId === id) {
+        state.chat.currentId = state.chat.conversations[0]?.id || null;
+      }
+      if (state.chat.conversations.length === 0) {
+        newChat();
+      } else {
+        switchDashTab('chat');
+      }
+      showToast('Chat deleted', 'info');
+    }
+
+    function switchChat(id) {
+      state.chat.currentId = id;
+      switchDashTab('chat');
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      // Check limit
+      if (state.chat.messageCount >= state.chat.limit) {
+        showToast('You have reached the free message limit. Upgrade to continue.', 'warning');
+        return;
+      }
+
+      const current = state.chat.conversations.find(c => c.id === state.chat.currentId);
+      if (current) {
+        current.messages.push({ role: 'user', content: msg });
+        state.chat.messageCount++;
+        // Simulate assistant reply
+        setTimeout(() => {
+          current.messages.push({ role: 'assistant', content: 'This is a simulated AI response. Upgrade for full capabilities.' });
+          switchDashTab('chat'); // refresh
+        }, 500);
+      }
+      input.value = '';
+      switchDashTab('chat');
+    }
+
+    function attachFile() {
+      showToast('File upload simulation - image attached', 'info');
+    }
+
+    function regenerateMessage() {
+      showToast('Regenerating last response...', 'info');
+    }
+
+    function showReason() {
+      showToast('Reasoning: This is a simulated explanation of the AI\'s thought process.', 'info');
+    }
+
+    function copyLastMessage() {
+      const current = state.chat.conversations.find(c => c.id === state.chat.currentId);
+      const last = current?.messages.slice(-1)[0];
+      if (last) {
+        navigator.clipboard?.writeText(last.content);
+        showToast('Copied!', 'success');
+      }
+    }
+
+    function searchChats(query) {
+      // For simplicity, just show toast
+      if (query) showToast(`Searching for "${query}"...`, 'info');
+    }
+
+    // Code functions
+    function changeLanguage(lang) {
+      state.code.language = lang;
+      // Update placeholder code
+      const samples = {
+        javascript: '// Write your code here\nconsole.log("Hello, Neurix!");',
+        python: '# Write your code here\nprint("Hello, Neurix!")',
+        html: '<h1>Hello, Neurix!</h1>',
+        css: 'body { background: #000; }'
+      };
+      state.code.code = samples[lang] || state.code.code;
+      document.getElementById('codeEditor').value = state.code.code;
+      showToast(`Language changed to ${lang}`, 'info');
+    }
+
+    function runCode() {
+      const code = document.getElementById('codeEditor').value;
+      state.code.code = code;
+      if (state.code.language === 'javascript') {
+        try {
+          const originalLog = console.log;
+          let output = '';
+          console.log = (...args) => { output += args.join(' ') + '\n'; };
+          eval(code);
+          console.log = originalLog;
+          state.code.output = output || 'Code executed successfully (no output)';
+        } catch (e) {
+          state.code.output = `Error: ${e.message}`;
+        }
+      } else {
+        state.code.output = `Simulated output for ${state.code.language}:\nHello, Neurix!`;
+      }
+      document.getElementById('codeOutput').textContent = state.code.output;
+      showToast('Code executed', 'success');
+    }
+
+    function debugCode() {
+      showToast('Debug mode: stepping through code...', 'info');
+    }
+
+    function compileCode() {
+      showToast('Compiling... (simulated)', 'info');
+      setTimeout(() => {
+        state.code.output = 'Compilation successful. Output: binary';
+        document.getElementById('codeOutput').textContent = state.code.output;
+      }, 1000);
+    }
+
+    // Existing dashboard panel renderers (unchanged)
     function renderModelsPanel() {
       const models = [
         { name: 'GPT-4 Turbo', type: 'Language', status: 'active', calls: '12,840' },
@@ -5537,7 +5753,7 @@
     }
 
     // ─── Recent Activity ──────────────────────────────────────
-    const activities = [
+    let activities = [
       { type: 'image', icon: '🎨', msg: 'Generated "Cyberpunk City at Dusk"', time: '2 min ago' },
       { type: 'audio', icon: '🎵', msg: 'TTS synthesis completed (2.3s)', time: '15 min ago' },
       { type: 'api', icon: '🔑', msg: 'API request: /v1/generate/image', time: '32 min ago' },
@@ -5812,7 +6028,7 @@
         .btn-add-device { width:100%;margin-top:12px;background:rgba(108,99,255,0.1);border:1px dashed rgba(108,99,255,0.4);color:#a78bfa;padding:10px;border-radius:10px;cursor:pointer;font-size:0.85rem;transition:all 0.2s; }
         .btn-add-device:hover { background:rgba(108,99,255,0.2); }
         .page-container { display: none; }
-        #page-home { display: block; } /* home visible by default */
+        #page-home { display: block; }
       `;
       document.head.appendChild(style);
     }
@@ -5831,15 +6047,12 @@
       initMouseParticles();
       renderActivity();
 
-      // Start IoT simulation after a delay
       setTimeout(() => startIoTSimulation(), 2000);
 
-      // Welcome toast after load
       setTimeout(() => showToast('Welcome to ChangeX Neurix v2.0 ⚡', 'success'), 1200);
       setTimeout(() => showToast('16 AI models loaded and ready', 'info'), 2500);
     });
 
-    // Handle window unload - cleanup intervals
     window.addEventListener('beforeunload', () => {
       if (iotInterval) clearInterval(iotInterval);
       if (state.audioTimer) clearInterval(state.audioTimer);
