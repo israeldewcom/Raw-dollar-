@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raw Wealthy | Premium Investment Platform v39.0</title>
+    <title>Raw Wealthy | Premium Investment Platform v38.0</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
@@ -1343,260 +1343,51 @@
         .position-absolute {
             position: absolute;
         }
-        
-        /* ===== NEW STYLES FOR SON & CBN VERIFICATION ===== */
-        .verification-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-lg);
-            margin-top: var(--space-md);
-        }
-        
-        .verification-card {
+
+        /* ===== NEW ADDITIONS: Regulation & Ramadan ===== */
+        .regulation-badges .badge-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
             background: var(--dark-card);
             border: 1px solid var(--dark-border);
             border-radius: var(--radius-lg);
-            padding: var(--space-lg);
-            transition: all var(--transition-normal);
+            font-weight: 600;
         }
-        
-        .verification-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary-color);
-        }
-        
-        .verification-header {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            margin-bottom: var(--space-md);
-            padding-bottom: var(--space-sm);
-            border-bottom: 1px solid var(--dark-border);
-        }
-        
-        .verification-icon {
-            width: 3rem;
-            height: 3rem;
-            border-radius: var(--radius-lg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .regulation-badges .badge-logo i {
             font-size: 1.5rem;
-            background: var(--gradient-primary);
-            color: white;
+            color: var(--primary-color);
         }
-        
-        .verification-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
+        .regulation-text {
+            max-width: 500px;
+            text-align: right;
         }
-        
-        .verification-subtitle {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-        
-        .verification-status {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: var(--space-md);
-            padding: var(--space-sm);
-            background: var(--dark-hover);
-            border-radius: var(--radius-md);
-        }
-        
-        .status-badge {
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius-full);
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-        
-        .status-badge.verified {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--secondary-color);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-        
-        .status-badge.pending {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--accent-orange);
-            border: 1px solid rgba(245, 158, 11, 0.2);
-        }
-        
-        .status-badge.not-verified {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--accent-red);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-        
-        .verification-info {
-            margin-bottom: var(--space-md);
-        }
-        
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-size: 0.875rem;
-        }
-        
-        .info-label {
-            color: var(--text-secondary);
-        }
-        
-        .info-value {
-            font-weight: 500;
-        }
-        
-        .verify-button {
-            width: 100%;
-            margin-top: var(--space-sm);
-        }
-        
-        /* ===== RAMADAN DESIGN ELEMENTS ===== */
         .ramadan-banner {
-            position: relative;
-            background: linear-gradient(135deg, #1a2a3a 0%, #2d3e4f 100%);
-            border-radius: var(--radius-xl);
-            padding: var(--space-lg) var(--space-xl);
-            margin-bottom: var(--space-xl);
-            overflow: hidden;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+            background: linear-gradient(135deg, #1a472a, #2d5a3a);
+            color: #ffd966;
+            border: none;
         }
-        
-        .ramadan-lanterns {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
+        .ramadan-banner .lanterns i {
+            animation: flicker 2s infinite;
         }
-        
-        .lantern {
-            position: absolute;
-            color: rgba(255, 215, 0, 0.4);
-            font-size: 3rem;
-            animation: float 3s ease-in-out infinite;
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
-        
-        .lantern-1 {
-            top: 10px;
-            left: 20px;
-            transform: rotate(-10deg);
-            animation-delay: 0s;
-        }
-        
-        .lantern-2 {
-            bottom: 10px;
-            right: 30px;
-            transform: rotate(15deg);
-            animation-delay: 1.5s;
-        }
-        
-        .lantern-3 {
-            top: 30px;
-            right: 100px;
-            transform: rotate(5deg);
-            animation-delay: 0.8s;
-        }
-        
-        .crescent {
-            position: absolute;
-            top: 20px;
-            right: 50px;
-            color: rgba(255, 215, 0, 0.5);
-            font-size: 4rem;
-            animation: glow 2s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(var(--rotate, 0deg)); }
-            50% { transform: translateY(-10px) rotate(var(--rotate, 0deg)); }
-        }
-        
-        @keyframes glow {
-            0%, 100% { opacity: 0.5; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
-            50% { opacity: 1; text-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }
-        }
-        
-        .ramadan-content {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: var(--space-md);
-        }
-        
-        .ramadan-greeting {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-        }
-        
-        .greeting-icon {
-            font-size: 3rem;
-            color: #FFD700;
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
-        }
-        
-        .greeting-text h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.25rem;
-            color: #FFD700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-        
-        .greeting-text p {
-            margin-bottom: 0;
-            color: var(--text-secondary);
-        }
-        
-        .ramadan-countdown {
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: var(--radius-lg);
-            padding: var(--space-sm) var(--space-lg);
-            text-align: center;
-        }
-        
-        .countdown-label {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.25rem;
-        }
-        
-        .countdown-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #FFD700;
-        }
-        
-        /* Verification Modal */
-        .verification-detail {
-            margin-bottom: var(--space-md);
-        }
-        
-        .detail-row {
-            display: flex;
-            margin-bottom: 0.5rem;
-        }
-        
-        .detail-label {
-            width: 120px;
-            color: var(--text-secondary);
-        }
-        
-        .detail-value {
-            flex: 1;
-            font-weight: 500;
+        @media (max-width: 768px) {
+            .regulation-badges .card-body {
+                flex-direction: column;
+                align-items: start;
+                gap: 1rem;
+            }
+            .regulation-text {
+                text-align: left;
+            }
+            .ramadan-banner .card-body {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -1728,8 +1519,8 @@
         
         <div class="sidebar-footer mt-4 p-3">
             <div class="text-muted small">
-                <div>Raw Wealthy v39.0</div>
-                <div>© 2025 All Rights Reserved</div>
+                <div>Raw Wealthy v38.0</div>
+                <div>© 2024 All Rights Reserved</div>
             </div>
         </div>
     </aside>
@@ -1869,31 +1660,6 @@
         <!-- Dashboard Page -->
         <section id="dashboard" class="page-section">
             <div class="container">
-                <!-- Ramadan Banner -->
-                <div class="ramadan-banner">
-                    <div class="ramadan-lanterns">
-                        <i class="fas fa-lantern lantern lantern-1"></i>
-                        <i class="fas fa-lantern lantern lantern-2"></i>
-                        <i class="fas fa-star-and-crescent crescent"></i>
-                        <i class="fas fa-lantern lantern lantern-3"></i>
-                    </div>
-                    <div class="ramadan-content">
-                        <div class="ramadan-greeting">
-                            <div class="greeting-icon">
-                                <i class="fas fa-star-and-crescent"></i>
-                            </div>
-                            <div class="greeting-text">
-                                <h3>Happy Ramadan!</h3>
-                                <p>May this holy month bring you peace, prosperity, and blessings.</p>
-                            </div>
-                        </div>
-                        <div class="ramadan-countdown">
-                            <div class="countdown-label">Days until Eid</div>
-                            <div class="countdown-value" id="ramadanCountdown">15</div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="section-header">
                     <h1>Dashboard</h1>
                     <p class="text-muted">Welcome back, <span id="userGreeting">User</span>! Here's your investment overview.</p>
@@ -1946,6 +1712,42 @@
                         <div class="stat-change positive">
                             <i class="fas fa-arrow-up"></i>
                             <span>Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- REGULATION BADGES (SON & CBN) -->
+                <div class="regulation-badges card mb-4">
+                    <div class="card-body d-flex align-center justify-between flex-wrap">
+                        <div class="d-flex align-center gap-3">
+                            <div class="badge-logo">
+                                <i class="fas fa-building"></i>
+                                <span>CBN</span>
+                            </div>
+                            <div class="badge-logo">
+                                <i class="fas fa-certificate"></i>
+                                <span>SON</span>
+                            </div>
+                        </div>
+                        <div class="regulation-text">
+                            <p class="mb-0">Fully Licensed and Regulated by the Central Bank of Nigeria (CBN) and Standards Organisation of Nigeria (SON).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HAPPY RAMADAN BANNER -->
+                <div class="ramadan-banner card mb-4">
+                    <div class="card-body d-flex align-center justify-between">
+                        <div class="d-flex align-center gap-3">
+                            <i class="fas fa-moon fa-3x" style="color: #ffd966;"></i>
+                            <div>
+                                <h4 class="mb-1" style="color: #ffd966;">✨ Happy Ramadan! ✨</h4>
+                                <p class="mb-0" style="color: #f1f1f1;">May this holy month bring peace, prosperity, and blessings to you and your family.</p>
+                            </div>
+                        </div>
+                        <div class="lanterns">
+                            <i class="fas fa-lantern fa-2x mx-2" style="color: #ffd966;"></i>
+                            <i class="fas fa-star fa-2x mx-2" style="color: #ffd966;"></i>
                         </div>
                     </div>
                 </div>
@@ -2017,110 +1819,6 @@
                                         <div class="loader"></div>
                                         <p class="text-muted mt-2">Loading notifications...</p>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SON & CBN Verification Section -->
-                <div class="card mt-4">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-shield-alt text-primary mr-2"></i>
-                            Regulatory Compliance Verification
-                        </h3>
-                        <span class="badge badge-info">SON & CBN Certified Platform</span>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-muted mb-4">
-                            Raw Wealthy is committed to full compliance with Nigerian regulatory bodies. 
-                            Verify our certifications with the Standards Organisation of Nigeria (SON) and 
-                            the Central Bank of Nigeria (CBN) below.
-                        </p>
-                        
-                        <div class="verification-grid">
-                            <!-- SON Verification Card -->
-                            <div class="verification-card" id="sonVerificationCard">
-                                <div class="verification-header">
-                                    <div class="verification-icon">
-                                        <i class="fas fa-certificate"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="verification-title">SON Certification</h4>
-                                        <p class="verification-subtitle">Standards Organisation of Nigeria</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="verification-status">
-                                    <span>Verification Status</span>
-                                    <span class="status-badge" id="sonStatusBadge">Not Verified</span>
-                                </div>
-                                
-                                <div class="verification-info">
-                                    <div class="info-item">
-                                        <span class="info-label">Certificate Number:</span>
-                                        <span class="info-value" id="sonCertNumber">SON/2025/87234</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="info-label">Issue Date:</span>
-                                        <span class="info-value" id="sonIssueDate">15 Jan 2025</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="info-label">Expiry Date:</span>
-                                        <span class="info-value" id="sonExpiryDate">14 Jan 2026</span>
-                                    </div>
-                                </div>
-                                
-                                <button class="btn btn-outline verify-button" id="verifySonBtn">
-                                    <i class="fas fa-check-circle"></i> Verify SON Certificate
-                                </button>
-                            </div>
-                            
-                            <!-- CBN Verification Card -->
-                            <div class="verification-card" id="cbnVerificationCard">
-                                <div class="verification-header">
-                                    <div class="verification-icon">
-                                        <i class="fas fa-university"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="verification-title">CBN Compliance</h4>
-                                        <p class="verification-subtitle">Central Bank of Nigeria</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="verification-status">
-                                    <span>Verification Status</span>
-                                    <span class="status-badge" id="cbnStatusBadge">Not Verified</span>
-                                </div>
-                                
-                                <div class="verification-info">
-                                    <div class="info-item">
-                                        <span class="info-label">License Number:</span>
-                                        <span class="info-value" id="cbnLicenseNumber">CBN/IMTO/2025/119</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="info-label">Approval Date:</span>
-                                        <span class="info-value" id="cbnApprovalDate">10 Feb 2025</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="info-label">Valid Until:</span>
-                                        <span class="info-value" id="cbnValidUntil">09 Feb 2026</span>
-                                    </div>
-                                </div>
-                                
-                                <button class="btn btn-outline verify-button" id="verifyCbnBtn">
-                                    <i class="fas fa-check-circle"></i> Verify CBN License
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="alert alert-info mt-4">
-                            <div class="d-flex">
-                                <i class="fas fa-info-circle fa-2x mr-3"></i>
-                                <div>
-                                    <h6>Why verify?</h6>
-                                    <p class="mb-0 small">SON and CBN certifications ensure that Raw Wealthy operates within the highest standards of quality, safety, and financial compliance in Nigeria. Your investments are protected under regulatory oversight.</p>
                                 </div>
                             </div>
                         </div>
@@ -3616,7 +3314,7 @@
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2025 Raw Wealthy. All rights reserved. v39.0</p>
+                <p>&copy; 2024 Raw Wealthy. All rights reserved. v38.0</p>
                 <p class="text-muted small">This platform is for demonstration purposes only. Investments carry risk.</p>
             </div>
         </div>
@@ -3700,20 +3398,6 @@
         </div>
     </div>
 
-    <!-- Verification Detail Modal (for SON/CBN) -->
-    <div class="modal" id="verificationModal">
-        <div class="modal-backdrop"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="verificationModalTitle">Verification Details</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body" id="verificationModalBody">
-                <!-- Dynamic content will be inserted here -->
-            </div>
-        </div>
-    </div>
-
     <!-- Notification Container -->
     <div class="notification-container" id="notificationContainer"></div>
 
@@ -3726,9 +3410,9 @@
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>// ==============================================
-// RAW WEALTHY PREMIUM v39.0 - PRODUCTION READY
+// RAW WEALTHY PREMIUM v38.0 - PRODUCTION READY
 // Advanced Investment Platform with Complete Features
-// ENHANCED WITH SON/CBN VERIFICATION AND RAMADAN DESIGN
+// ENHANCED WITH CUSTOM AMOUNT INPUT AND 8 INVESTMENT PLANS
 // ==============================================
 
 // ===== ENHANCED CONFIGURATION =====
@@ -3738,7 +3422,7 @@ const CONFIG = {
         : 'https://real-wealthy-1.onrender.com',
     
     DEBUG_MODE: true,
-    VERSION: '39.0.0',
+    VERSION: '38.0.0',
     
     // Business Logic
     MIN_INVESTMENT: 3500,
@@ -3767,23 +3451,6 @@ const CONFIG = {
         account_number: "7072859483",
         note: "Use your registered name as depositor name",
         deposit_instructions: "After payment, upload your payment proof for verification"
-    },
-    
-    // SON & CBN Verification Details
-    SON_DETAILS: {
-        certificate_number: "SON/2025/87234",
-        issue_date: "2025-01-15",
-        expiry_date: "2026-01-14",
-        status: "verified",
-        scope: "Investment and Financial Services"
-    },
-    
-    CBN_DETAILS: {
-        license_number: "CBN/IMTO/2025/119",
-        approval_date: "2025-02-10",
-        valid_until: "2026-02-09",
-        status: "verified",
-        license_type: "International Money Transfer Operator"
     }
 };
 
@@ -3863,8 +3530,6 @@ let appState = StateManager.get('appState', {
     notifications: [],
     referrals: [],
     plans: [],
-    sonVerified: StateManager.get('sonVerified', false),
-    cbnVerified: StateManager.get('cbnVerified', false),
     lastUpdated: null
 });
 
@@ -4036,20 +3701,6 @@ class Utils {
 
     static hasBankDetails(user) {
         return user && user.bank_details && user.bank_details.account_number && user.bank_details.account_number.trim() !== '';
-    }
-    
-    static updateRamadanCountdown() {
-        const countdownEl = document.getElementById('ramadanCountdown');
-        if (!countdownEl) return;
-        
-        // Calculate days until Eid (simplified: assume Eid is 30 days from Ramadan start)
-        // For demo, we'll use a fixed number
-        const today = new Date();
-        const ramadanStart = new Date(2025, 2, 1); // March 1, 2025 (approx)
-        const eidDate = new Date(2025, 2, 31); // March 31, 2025 (approx)
-        
-        const daysUntilEid = Math.ceil((eidDate - today) / (1000 * 60 * 60 * 24));
-        countdownEl.textContent = daysUntilEid > 0 ? daysUntilEid : 0;
     }
 }
 
@@ -4409,8 +4060,6 @@ class AuthManager {
             notifications: [],
             referrals: [],
             plans: [],
-            sonVerified: false,
-            cbnVerified: false,
             lastUpdated: null
         };
         
@@ -4727,9 +4376,6 @@ class DashboardManager {
                 
                 this.updateInvestmentChart();
                 
-                // Update SON/CBN verification UI
-                this.updateVerificationStatus();
-                
                 Debug.info('Dashboard', 'Dashboard data loaded successfully');
             } else {
                 Debug.warn('Dashboard', 'Failed to load dashboard data:', profileResponse.message);
@@ -4769,33 +4415,6 @@ class DashboardManager {
         } catch (error) {
             Debug.error('Dashboard', 'Failed to update dashboard stats:', error);
         }
-    }
-    
-    static updateVerificationStatus() {
-        // Update SON status badge
-        const sonBadge = document.getElementById('sonStatusBadge');
-        if (sonBadge) {
-            const isVerified = appState.sonVerified || false;
-            sonBadge.textContent = isVerified ? 'Verified' : 'Not Verified';
-            sonBadge.className = `status-badge ${isVerified ? 'verified' : 'not-verified'}`;
-        }
-        
-        // Update CBN status badge
-        const cbnBadge = document.getElementById('cbnStatusBadge');
-        if (cbnBadge) {
-            const isVerified = appState.cbnVerified || false;
-            cbnBadge.textContent = isVerified ? 'Verified' : 'Not Verified';
-            cbnBadge.className = `status-badge ${isVerified ? 'verified' : 'not-verified'}`;
-        }
-        
-        // Update certificate numbers (static for demo)
-        document.getElementById('sonCertNumber').textContent = CONFIG.SON_DETAILS.certificate_number;
-        document.getElementById('sonIssueDate').textContent = Utils.formatDate(CONFIG.SON_DETAILS.issue_date);
-        document.getElementById('sonExpiryDate').textContent = Utils.formatDate(CONFIG.SON_DETAILS.expiry_date);
-        
-        document.getElementById('cbnLicenseNumber').textContent = CONFIG.CBN_DETAILS.license_number;
-        document.getElementById('cbnApprovalDate').textContent = Utils.formatDate(CONFIG.CBN_DETAILS.approval_date);
-        document.getElementById('cbnValidUntil').textContent = Utils.formatDate(CONFIG.CBN_DETAILS.valid_until);
     }
     
     static updateRecentActivity(transactions) {
@@ -6998,7 +6617,6 @@ class EventHandlers {
         this.setupFilePreviews();
         this.setupWithdrawalCalculation();
         this.setupReferralActions();
-        this.setupVerificationButtons();
         
         Debug.info('EventHandlers', 'Event handlers initialized successfully');
     }
@@ -7523,159 +7141,17 @@ class EventHandlers {
         
         Utils.showNotification(`Shared on ${platform}`, 'success');
     }
-    
-    static setupVerificationButtons() {
-        const verifySonBtn = document.getElementById('verifySonBtn');
-        if (verifySonBtn) {
-            verifySonBtn.addEventListener('click', () => {
-                // Toggle verification status for demo
-                appState.sonVerified = !appState.sonVerified;
-                StateManager.set('appState', appState);
-                
-                const sonBadge = document.getElementById('sonStatusBadge');
-                if (sonBadge) {
-                    sonBadge.textContent = appState.sonVerified ? 'Verified' : 'Not Verified';
-                    sonBadge.className = `status-badge ${appState.sonVerified ? 'verified' : 'not-verified'}`;
-                }
-                
-                Utils.showNotification(`SON Certificate ${appState.sonVerified ? 'verified' : 'unverified'} successfully!`, 'success');
-                
-                // Show modal with details
-                const modal = document.getElementById('verificationModal');
-                const modalBody = document.getElementById('verificationModalBody');
-                const modalTitle = document.getElementById('verificationModalTitle');
-                
-                if (modal && modalBody) {
-                    modalTitle.textContent = 'SON Certificate Details';
-                    modalBody.innerHTML = `
-                        <div class="verification-detail">
-                            <div class="detail-row">
-                                <span class="detail-label">Certificate #:</span>
-                                <span class="detail-value">${CONFIG.SON_DETAILS.certificate_number}</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Issue Date:</span>
-                                <span class="detail-value">${Utils.formatDate(CONFIG.SON_DETAILS.issue_date)}</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Expiry Date:</span>
-                                <span class="detail-value">${Utils.formatDate(CONFIG.SON_DETAILS.expiry_date)}</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Status:</span>
-                                <span class="detail-value ${appState.sonVerified ? 'text-success' : 'text-warning'}">
-                                    ${appState.sonVerified ? 'Verified' : 'Not Verified'}
-                                </span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Scope:</span>
-                                <span class="detail-value">${CONFIG.SON_DETAILS.scope}</span>
-                            </div>
-                        </div>
-                        <div class="alert alert-info mt-3">
-                            <i class="fas fa-info-circle mr-2"></i>
-                            This certificate confirms that Raw Wealthy meets the quality standards set by the Standards Organisation of Nigeria.
-                        </div>
-                    `;
-                    
-                    modal.classList.add('active');
-                    
-                    // Close modal events
-                    const closeBtn = modal.querySelector('.modal-close');
-                    const backdrop = modal.querySelector('.modal-backdrop');
-                    
-                    const closeModal = () => {
-                        modal.classList.remove('active');
-                    };
-                    
-                    closeBtn?.addEventListener('click', closeModal);
-                    backdrop?.addEventListener('click', closeModal);
-                }
-            });
-        }
-        
-        const verifyCbnBtn = document.getElementById('verifyCbnBtn');
-        if (verifyCbnBtn) {
-            verifyCbnBtn.addEventListener('click', () => {
-                // Toggle verification status for demo
-                appState.cbnVerified = !appState.cbnVerified;
-                StateManager.set('appState', appState);
-                
-                const cbnBadge = document.getElementById('cbnStatusBadge');
-                if (cbnBadge) {
-                    cbnBadge.textContent = appState.cbnVerified ? 'Verified' : 'Not Verified';
-                    cbnBadge.className = `status-badge ${appState.cbnVerified ? 'verified' : 'not-verified'}`;
-                }
-                
-                Utils.showNotification(`CBN License ${appState.cbnVerified ? 'verified' : 'unverified'} successfully!`, 'success');
-                
-                // Show modal with details
-                const modal = document.getElementById('verificationModal');
-                const modalBody = document.getElementById('verificationModalBody');
-                const modalTitle = document.getElementById('verificationModalTitle');
-                
-                if (modal && modalBody) {
-                    modalTitle.textContent = 'CBN License Details';
-                    modalBody.innerHTML = `
-                        <div class="verification-detail">
-                            <div class="detail-row">
-                                <span class="detail-label">License #:</span>
-                                <span class="detail-value">${CONFIG.CBN_DETAILS.license_number}</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Approval Date:</span>
-                                <span class="detail-value">${Utils.formatDate(CONFIG.CBN_DETAILS.approval_date)}</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Valid Until:</span>
-                                <span class="detail-value">${Utils.formatDate(CONFIG.CBN_DETAILS.valid_until)}</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Status:</span>
-                                <span class="detail-value ${appState.cbnVerified ? 'text-success' : 'text-warning'}">
-                                    ${appState.cbnVerified ? 'Verified' : 'Not Verified'}
-                                </span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">License Type:</span>
-                                <span class="detail-value">${CONFIG.CBN_DETAILS.license_type}</span>
-                            </div>
-                        </div>
-                        <div class="alert alert-info mt-3">
-                            <i class="fas fa-info-circle mr-2"></i>
-                            This license confirms that Raw Wealthy is compliant with Central Bank of Nigeria regulations for financial services.
-                        </div>
-                    `;
-                    
-                    modal.classList.add('active');
-                    
-                    // Close modal events
-                    const closeBtn = modal.querySelector('.modal-close');
-                    const backdrop = modal.querySelector('.modal-backdrop');
-                    
-                    const closeModal = () => {
-                        modal.classList.remove('active');
-                    };
-                    
-                    closeBtn?.addEventListener('click', closeModal);
-                    backdrop?.addEventListener('click', closeModal);
-                }
-            });
-        }
-    }
 }
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
-    Debug.info('App', 'Initializing Raw Wealthy v39.0 - Production Ready...');
-    console.log('🚀 Raw Wealthy Premium v39.0 - Production Ready');
+    Debug.info('App', 'Initializing Raw Wealthy v38.0 - Production Ready...');
+    console.log('🚀 Raw Wealthy Premium v38.0 - Production Ready');
     console.log('📊 Debug Mode:', CONFIG.DEBUG_MODE);
     console.log('🔐 Auth Status:', authToken ? 'Logged In' : 'Logged Out');
     console.log('👤 Current User:', currentUser?.email || 'None');
     console.log('🌐 API Base URL:', CONFIG.API_BASE_URL);
     console.log('🏦 Platform Bank:', CONFIG.PLATFORM_BANK_DETAILS.account_number);
-    console.log('🏛️ SON & CBN Verification: Integrated');
-    console.log('🌙 Ramadan Design: Active');
     console.log('============================================');
     
     Router.init();
@@ -7687,8 +7163,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         Debug.info('App', 'No user logged in, showing login page');
     }
-    
-    Utils.updateRamadanCountdown();
     
     window.addEventListener('online', () => {
         Utils.showNotification('You are back online', 'success');
@@ -7704,7 +7178,7 @@ document.addEventListener('DOMContentLoaded', () => {
         Debug.warn('Network', 'Connection lost');
     });
     
-    Debug.info('App', '✅ Raw Wealthy v39.0 Initialization Complete');
+    Debug.info('App', '✅ Raw Wealthy v38.0 Initialization Complete');
 });
 
 // ===== GLOBAL ERROR HANDLING =====
