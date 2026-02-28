@@ -3578,15 +3578,22 @@
                 name: 'Raw Wealthy',
                 short_name: 'RawWealthy',
                 description: 'Premium Investment Platform',
-                start_url: window.location.href,
+                start_url: '/',
                 display: 'standalone',
                 background_color: '#0F172A',
                 theme_color: '#7C3AED',
                 icons: [
                     {
-                        src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...', // replace with actual icon
+                        src: '/icons/icon-192.png',
                         sizes: '192x192',
-                        type: 'image/png'
+                        type: 'image/png',
+                        purpose: 'any maskable'
+                    },
+                    {
+                        src: '/icons/icon-512.png',
+                        sizes: '512x512',
+                        type: 'image/png',
+                        purpose: 'any maskable'
                     }
                 ]
             };
@@ -3596,7 +3603,7 @@
 
             // Register service worker
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
+                navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed:', err));
             }
         })();
 
@@ -3636,7 +3643,10 @@
                 account_number: "7072859483",
                 note: "Use your registered name as depositor name",
                 deposit_instructions: "After payment, upload your payment proof for verification"
-            }
+            },
+
+            // Push notification VAPID public key (replace with your own)
+            VAPID_PUBLIC_KEY: 'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U'
         };
 
         // ===== ADVANCED DEBUGGING SYSTEM =====
@@ -6789,6 +6799,204 @@
             }
         }
 
+        // ===== PUSH NOTIFICATIONS =====
+        class PushNotificationManager {
+            static async subscribe() {
+                if (!('Notification' in window && 'serviceWorker' in navigator && 'PushManager' in window)) {
+                    Debug.warn('Push', 'Push notifications not supported');
+                    return;
+                }
+
+                try {
+                    const permission = await Notification.requestPermission();
+                    if (permission !== 'granted') {
+                        Debug.warn('Push', 'Notification permission denied');
+                        return;
+                    }
+
+                    const registration = await navigator.serviceWorker.ready;
+                    const subscription = await registration.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: CONFIG.VAPID_PUBLIC_KEY
+                    });
+
+                    // Send subscription to server
+                    const response = await ApiService.request('/api/push/subscribe', {
+                        method: 'POST',
+                        body: JSON.stringify(subscription)
+                    });
+
+                    if (response.success) {
+                        Debug.info('Push', 'Subscribed to push notifications');
+                        StateManager.set('pushSubscribed', true);
+                    } else {
+                        Debug.error('Push', 'Failed to subscribe on server');
+                    }
+                } catch (error) {
+                    Debug.error('Push', 'Push subscription failed:', error);
+                }
+            }
+
+            static async unsubscribe() {
+                try {
+                    const registration = await navigator.serviceWorker.ready;
+                    const subscription = await registration.pushManager.getSubscription();
+                    if (subscription) {
+                        await subscription.unsubscribe();
+                        await ApiService.request('/api/push/unsubscribe', { method: 'POST' });
+                        StateManager.set('pushSubscribed', false);
+                        Debug.info('Push', 'Unsubscribed from push notifications');
+                    }
+                } catch (error) {
+                    Debug.error('Push', 'Push unsubscription failed:', error);
+                }
+            }
+        }
+
+        // ===== BACKGROUND SYNC FOR OFFLINE ACTIONS =====
+        class BackgroundSyncManager {
+            static async init() {
+                if (!('serviceWorker' in navigator && 'SyncManager' in window)) {
+                    Debug.warn('Sync', 'Background sync not supported');
+                    return;
+                }
+
+                // Queue offline actions
+                window.addEventListener('online', () => {
+                    this.processQueue();
+                });
+
+                // Register sync when offline action attempted
+                this.setupFormSync();
+            }
+
+            static async queueAction(actionType, data) {
+                const queue = StateManager.get('offlineQueue', []);
+                queue.push({
+                    id: Utils.generateId(),
+                    type: actionType,
+                    data: data,
+                    timestamp: Date.now()
+                });
+                StateManager.set('offlineQueue', queue);
+
+                if (!navigator.onLine) {
+                    try {
+                        const registration = await navigator.serviceWorker.ready;
+                        await registration.sync.register('sync-actions');
+                        Utils.showNotification('Action saved offline. It will be sent when connection is restored.', 'info');
+                    } catch (error) {
+                        Debug.error('Sync', 'Failed to register sync:', error);
+                    }
+                } else {
+                    this.processQueue();
+                }
+            }
+
+            static async processQueue() {
+                const queue = StateManager.get('offlineQueue', []);
+                if (queue.length === 0) return;
+
+                Utils.showLoader('Syncing offline actions...');
+                let processed = 0;
+
+                for (const item of queue) {
+                    try {
+                        switch (item.type) {
+                            case 'deposit':
+                                await ApiService.createDeposit(item.data);
+                                break;
+                            case 'withdrawal':
+                                await ApiService.createWithdrawal(item.data.amount, item.data.payment_method);
+                                break;
+                            case 'support':
+                                await ApiService.createSupportTicket(item.data);
+                                break;
+                            // Add more cases as needed
+                        }
+                        processed++;
+                    } catch (error) {
+                        Debug.error('Sync', `Failed to process ${item.type}:`, error);
+                        // Keep failed items in queue for next retry
+                        continue;
+                    }
+                }
+
+                // Remove successfully processed items
+                const remaining = queue.filter((_, index) => index >= processed);
+                StateManager.set('offlineQueue', remaining);
+                Utils.hideLoader();
+                if (processed > 0) {
+                    Utils.showNotification(`${processed} offline actions synced successfully!`, 'success');
+                }
+            }
+
+            static setupFormSync() {
+                // Override deposit form submission to use queue when offline
+                const depositForm = document.getElementById('depositForm');
+                if (depositForm) {
+                    const originalSubmit = depositForm.onsubmit;
+                    depositForm.onsubmit = async (e) => {
+                        e.preventDefault();
+                        if (navigator.onLine) {
+                            await DepositManager.submitDeposit(e);
+                        } else {
+                            const amount = document.getElementById('depositAmount')?.value;
+                            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value;
+                            const paymentProof = document.getElementById('paymentProof')?.files[0];
+                            if (!amount || !paymentMethod) return;
+                            const data = { amount: parseFloat(amount), payment_method: paymentMethod };
+                            if (paymentProof) {
+                                // Note: Files can't be stored in localStorage; we'd need IndexedDB for full offline support
+                                Utils.showNotification('File uploads require internet connection. Please try again when online.', 'warning');
+                                return;
+                            }
+                            await BackgroundSyncManager.queueAction('deposit', data);
+                        }
+                    };
+                }
+
+                // Similar for withdrawal and support forms
+                const withdrawalForm = document.getElementById('withdrawalForm');
+                if (withdrawalForm) {
+                    const originalSubmit = withdrawalForm.onsubmit;
+                    withdrawalForm.onsubmit = async (e) => {
+                        e.preventDefault();
+                        if (navigator.onLine) {
+                            await WithdrawalManager.submitWithdrawal(e);
+                        } else {
+                            const amount = document.getElementById('withdrawalAmount')?.value;
+                            const paymentMethod = document.querySelector('input[name="withdrawMethod"]:checked')?.value;
+                            if (!amount || !paymentMethod) return;
+                            const data = { amount: parseFloat(amount), payment_method: paymentMethod };
+                            await BackgroundSyncManager.queueAction('withdrawal', data);
+                        }
+                    };
+                }
+
+                const supportForm = document.getElementById('supportForm');
+                if (supportForm) {
+                    const originalSubmit = supportForm.onsubmit;
+                    supportForm.onsubmit = async (e) => {
+                        e.preventDefault();
+                        if (navigator.onLine) {
+                            // Original handler already exists, but we need to prevent double submission
+                            // We'll call the existing handler only if online
+                            await SupportManager.createSupportTicket(e);
+                        } else {
+                            const category = document.getElementById('ticketCategory')?.value;
+                            const priority = document.getElementById('ticketPriority')?.value;
+                            const subject = document.getElementById('ticketSubject')?.value;
+                            const message = document.getElementById('ticketMessage')?.value;
+                            if (!category || !subject || !message) return;
+                            const data = { category, priority, subject, message };
+                            await BackgroundSyncManager.queueAction('support', data);
+                        }
+                    };
+                }
+            }
+        }
+
         // ===== EVENT HANDLERS =====
         class EventHandlers {
             static init() {
@@ -7341,10 +7549,16 @@
             
             Router.init();
             EventHandlers.init();
+            BackgroundSyncManager.init(); // Initialize background sync
             
             if (authToken) {
                 Debug.info('App', 'User already logged in, loading user data...');
                 AuthManager.loadUserData();
+                
+                // Ask for push notification permission if not already subscribed
+                if (!StateManager.get('pushSubscribed', false)) {
+                    PushNotificationManager.subscribe();
+                }
             } else {
                 Debug.info('App', 'No user logged in, showing login page');
             }
@@ -7356,6 +7570,7 @@
                 if (authToken) {
                     DashboardManager.loadDashboardData();
                 }
+                BackgroundSyncManager.processQueue();
             });
             
             window.addEventListener('offline', () => {
@@ -7395,6 +7610,8 @@
             ReferralManager,
             ProfileManager,
             AdminManager,
+            PushNotificationManager,
+            BackgroundSyncManager,
             
             login: AuthManager.login,
             logout: AuthManager.logout,
