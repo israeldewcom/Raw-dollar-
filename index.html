@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Raw Wealthy | Premium Investment Platform v38.0</title>
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    <!-- Apple touch icon for iOS -->
-    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+    <!-- PWA Manifest (generated inline) -->
+    <link rel="manifest" id="manifest-link" href="data:application/manifest+json,{}">
+    <meta name="theme-color" content="#7C3AED">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#7C3AED">
+    <meta name="apple-mobile-web-app-title" content="Raw Wealthy">
+    <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
@@ -77,6 +77,7 @@
             --z-modal: 1050;
             --z-popover: 1060;
             --z-tooltip: 1070;
+            --z-install-banner: 1100;
         }
         
         /* Dark Theme Overrides */
@@ -106,6 +107,7 @@
         html {
             scroll-behavior: smooth;
             font-size: 16px;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
@@ -115,9 +117,77 @@
             line-height: 1.6;
             overflow-x: hidden;
             transition: background-color var(--transition-normal);
+            padding-top: 60px; /* Space for fixed install banner */
         }
         
-        /* ===== TYPOGRAPHY ===== */
+        /* ===== INSTALL BANNER ===== */
+        .install-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: var(--z-install-banner);
+            box-shadow: var(--shadow-md);
+            transform: translateY(0);
+            transition: transform var(--transition-normal);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .install-banner.hidden {
+            transform: translateY(-100%);
+        }
+        .install-banner .message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+        .install-banner .message i {
+            font-size: 1.5rem;
+        }
+        .install-banner .install-btn {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition-fast);
+            box-shadow: var(--shadow-sm);
+        }
+        .install-banner .install-btn:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-md);
+        }
+        .install-banner .install-btn i {
+            font-size: 1.1rem;
+        }
+        .install-banner .close-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity var(--transition-fast);
+            margin-left: 10px;
+        }
+        .install-banner .close-btn:hover {
+            opacity: 1;
+        }
+        
+        /* ===== TYPOGRAPHY (unchanged) ===== */
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Montserrat', sans-serif;
             font-weight: 700;
@@ -156,7 +226,7 @@
             color: var(--primary-color);
         }
         
-        /* ===== LAYOUT UTILITIES ===== */
+        /* ===== LAYOUT UTILITIES (unchanged) ===== */
         .container {
             width: 100%;
             max-width: 1200px;
@@ -173,9 +243,7 @@
             text-align: center;
         }
         
-        /* ===== COMPONENTS ===== */
-        
-        /* Cards */
+        /* ===== COMPONENTS (unchanged) ===== */
         .card {
             background: var(--dark-card);
             border-radius: var(--radius-lg);
@@ -206,7 +274,6 @@
             color: var(--text-primary);
         }
         
-        /* Buttons */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -1397,84 +1464,43 @@
             }
         }
 
-        /* ===== NEW: Install App Banner ===== */
-        .install-banner {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 0.75rem var(--space-md);
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: calc(var(--z-fixed) + 1);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-            font-size: 0.9rem;
-            box-shadow: var(--shadow-md);
-        }
-        .install-banner.show {
-            display: flex;
-        }
-        .install-banner .install-btn {
-            background: white;
-            color: var(--primary-dark);
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: var(--radius-full);
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform var(--transition-fast);
-        }
-        .install-banner .install-btn:hover {
-            transform: scale(1.05);
-        }
-        .install-banner .close-banner {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            margin-left: 1rem;
-        }
-
-        /* Adjust main content padding to account for banner */
-        body.install-banner-visible .main-content {
-            padding-top: 120px; /* 80px navbar + 40px banner */
-        }
-        body.install-banner-visible .navbar {
-            top: 40px;
-        }
-
         /* Certificate images styling */
         .certificate-img {
-            width: 40px;
             height: 40px;
-            object-fit: contain;
+            width: auto;
             border-radius: var(--radius-sm);
-            cursor: pointer;
+            box-shadow: var(--shadow-sm);
             transition: transform var(--transition-fast);
         }
         .certificate-img:hover {
             transform: scale(1.1);
         }
-        .certificate-preview-modal .modal-content {
-            max-width: 600px;
-            text-align: center;
-        }
-        .certificate-preview-modal img {
-            max-width: 100%;
-            max-height: 80vh;
+        .badge-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-lg);
         }
     </style>
 </head>
 <body>
-    <!-- Install App Banner (hidden by default) -->
+    <!-- INSTALL BANNER - APPEARS ON ALL PAGES -->
     <div class="install-banner" id="installBanner">
-        <span>📱 Install Raw Wealthy app for a better experience!</span>
-        <button class="install-btn" id="installButton">Install</button>
-        <button class="close-banner" id="closeBanner">&times;</button>
+        <div class="message">
+            <i class="fas fa-download"></i>
+            <span>Install Raw Wealthy for the best experience</span>
+        </div>
+        <div style="display: flex; align-items: center;">
+            <button class="install-btn" id="installButton">
+                <i class="fas fa-mobile-alt"></i> Install
+            </button>
+            <button class="close-btn" id="closeInstallBanner">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
     </div>
 
     <!-- Theme Toggle -->
@@ -1801,17 +1827,19 @@
                     </div>
                 </div>
 
-                <!-- REGULATION BADGES (SON & CBN) with actual certificate images -->
+                <!-- REGULATION BADGES (CERTIFICATE IMAGES ADDED) -->
                 <div class="regulation-badges card mb-4">
                     <div class="card-body d-flex align-center justify-between flex-wrap">
                         <div class="d-flex align-center gap-3">
-                            <div class="badge-logo" onclick="openCertificate('son')">
-                                <img src="IMG-20260227-WA0105.jpg" alt="SON Certificate" class="certificate-img" title="Click to view ISO 9001:2015 Certificate">
-                                <span>SON</span>
+                            <!-- ISO 9001:2015 Certificate Image -->
+                            <div class="badge-logo">
+                                <img src="IMG-20260227-WA0105.jpg" alt="ISO 9001:2015 Certified" class="certificate-img" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; align-items: center; gap: 0.5rem;"><i class="fas fa-certificate"></i><span>ISO 9001:2015</span></div>
                             </div>
-                            <div class="badge-logo" onclick="openCertificate('cac')">
-                                <img src="IMG-20260227-WA0103.jpg" alt="CAC Certificate" class="certificate-img" title="Click to view Business Registration">
-                                <span>CBN</span>
+                            <!-- Nigerian Business Registration Certificate Image -->
+                            <div class="badge-logo">
+                                <img src="IMG-20260227-WA0103.jpg" alt="CAC Registered" class="certificate-img" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; align-items: center; gap: 0.5rem;"><i class="fas fa-building"></i><span>CAC</span></div>
                             </div>
                         </div>
                         <div class="regulation-text">
@@ -3405,20 +3433,6 @@
         </div>
     </footer>
 
-    <!-- Certificate Preview Modal -->
-    <div class="modal" id="certificateModal">
-        <div class="modal-backdrop"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Certificate Preview</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body text-center">
-                <img id="certificateImage" src="" alt="Certificate" style="max-width: 100%; max-height: 70vh;">
-            </div>
-        </div>
-    </div>
-
     <!-- Modals -->
     <div class="modal" id="investmentModal">
         <div class="modal-backdrop"></div>
@@ -3514,6 +3528,77 @@
         // Advanced Investment Platform with Complete Features
         // ENHANCED WITH CUSTOM AMOUNT INPUT AND 8 INVESTMENT PLANS
         // ==============================================
+
+        // ===== PWA & INSTALL BANNER =====
+        (function() {
+            let deferredPrompt;
+            const installBanner = document.getElementById('installBanner');
+            const installButton = document.getElementById('installButton');
+            const closeBtn = document.getElementById('closeInstallBanner');
+
+            // Check if already installed (standalone mode)
+            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+                installBanner.classList.add('hidden');
+            }
+
+            // Listen for beforeinstallprompt
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                // Show banner only if not already hidden by user preference
+                if (!localStorage.getItem('installBannerClosed')) {
+                    installBanner.classList.remove('hidden');
+                }
+            });
+
+            // Install button click
+            installButton.addEventListener('click', async () => {
+                if (!deferredPrompt) {
+                    Utils.showNotification('Installation not available at the moment. You can add to home screen manually.', 'info');
+                    return;
+                }
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    Utils.showNotification('Thank you for installing Raw Wealthy!', 'success');
+                    installBanner.classList.add('hidden');
+                    localStorage.setItem('installBannerClosed', 'true');
+                }
+                deferredPrompt = null;
+            });
+
+            // Close banner (user dismisses)
+            closeBtn.addEventListener('click', () => {
+                installBanner.classList.add('hidden');
+                localStorage.setItem('installBannerClosed', 'true');
+            });
+
+            // Dynamically generate manifest
+            const manifest = {
+                name: 'Raw Wealthy',
+                short_name: 'RawWealthy',
+                description: 'Premium Investment Platform',
+                start_url: window.location.href,
+                display: 'standalone',
+                background_color: '#0F172A',
+                theme_color: '#7C3AED',
+                icons: [
+                    {
+                        src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...', // replace with actual icon
+                        sizes: '192x192',
+                        type: 'image/png'
+                    }
+                ]
+            };
+            const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+            const manifestURL = URL.createObjectURL(manifestBlob);
+            document.getElementById('manifest-link').href = manifestURL;
+
+            // Register service worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
+            }
+        })();
 
         // ===== ENHANCED CONFIGURATION =====
         const CONFIG = {
@@ -6704,71 +6789,6 @@
             }
         }
 
-        // ===== PWA INSTALL HANDLER =====
-        let deferredPrompt;
-
-        // Function to show install banner
-        function showInstallBanner() {
-            const banner = document.getElementById('installBanner');
-            if (banner) {
-                banner.classList.add('show');
-                document.body.classList.add('install-banner-visible');
-            }
-        }
-
-        // Function to hide install banner
-        function hideInstallBanner() {
-            const banner = document.getElementById('installBanner');
-            if (banner) {
-                banner.classList.remove('show');
-                document.body.classList.remove('install-banner-visible');
-            }
-        }
-
-        // Check if already installed (standalone mode)
-        function isAppInstalled() {
-            return window.matchMedia('(display-mode: standalone)').matches || 
-                   window.matchMedia('(display-mode: fullscreen)').matches ||
-                   window.navigator.standalone === true; // iOS
-        }
-
-        // Install button click handler
-        async function installApp() {
-            if (!deferredPrompt) {
-                Utils.showNotification('Installation prompt not available yet. Try again in a moment.', 'warning');
-                return;
-            }
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`User response to install prompt: ${outcome}`);
-            if (outcome === 'accepted') {
-                Utils.showNotification('Thank you for installing Raw Wealthy!', 'success');
-                hideInstallBanner();
-            }
-            deferredPrompt = null;
-        }
-
-        // Listen for beforeinstallprompt event
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            // Show banner if app not installed
-            if (!isAppInstalled()) {
-                showInstallBanner();
-            }
-        });
-
-        // Close banner manually
-        document.getElementById('closeBanner')?.addEventListener('click', hideInstallBanner);
-
-        // Install button click
-        document.getElementById('installButton')?.addEventListener('click', installApp);
-
-        // If user already has app installed, hide banner
-        if (isAppInstalled()) {
-            hideInstallBanner();
-        }
-
         // ===== EVENT HANDLERS =====
         class EventHandlers {
             static init() {
@@ -7307,31 +7327,6 @@
                 Utils.showNotification(`Shared on ${platform}`, 'success');
             }
         }
-
-        // ===== CERTIFICATE VIEWER =====
-        window.openCertificate = function(type) {
-            const modal = document.getElementById('certificateModal');
-            const img = document.getElementById('certificateImage');
-            if (type === 'son') {
-                img.src = 'IMG-20260227-WA0105.jpg';
-            } else {
-                img.src = 'IMG-20260227-WA0103.jpg';
-            }
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            
-            // Close handlers
-            const closeBtn = modal.querySelector('.modal-close');
-            const backdrop = modal.querySelector('.modal-backdrop');
-            
-            const closeModal = () => {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            };
-            
-            closeBtn.addEventListener('click', closeModal, { once: true });
-            backdrop.addEventListener('click', closeModal, { once: true });
-        };
 
         // ===== INITIALIZATION =====
         document.addEventListener('DOMContentLoaded', () => {
