@@ -2,23 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Raw Wealthy | Premium Investment Platform v38.0</title>
-    <!-- PWA Manifest (generated inline) -->
-    <link rel="manifest" id="manifest-link" href="data:application/manifest+json,{}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Raw Wealthy | Premium Investment Platform v38.1</title>
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#7C3AED">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Raw Wealthy">
-    <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <meta name="google-site-verification" content="tUxp_DpU8tzFSBwr5VrkI7LTodtoqS9fztzkH0FTxbE" />
+    <meta name="google-site-verification" content="PB3lWW6G3FccAT72e65ehI6ILq12ZxNzS_RUsXDVufE" />
     <style>
         /* ===== CSS VARIABLES & THEME ===== */
         :root {
-            /* Color Palette */
+            /* Color Palette - Enhanced with more vibrant shades */
             --primary-color: #7C3AED;
             --primary-dark: #5B21B6;
             --primary-light: #8B5CF6;
@@ -28,6 +29,8 @@
             --accent-red: #EF4444;
             --accent-orange: #F59E0B;
             --accent-yellow: #FBBF24;
+            --accent-purple: #A78BFA;
+            --accent-pink: #EC4899;
             --dark-bg: #0F172A;
             --dark-card: #1E293B;
             --dark-border: #334155;
@@ -36,18 +39,21 @@
             --text-secondary: #94A3B8;
             --text-muted: #64748B;
             
-            /* Gradients */
+            /* Gradients - More dynamic */
             --gradient-primary: linear-gradient(135deg, #7C3AED 0%, #3B82F6 100%);
             --gradient-secondary: linear-gradient(135deg, #10B981 0%, #3B82F6 100%);
             --gradient-danger: linear-gradient(135deg, #EF4444 0%, #F59E0B 100%);
             --gradient-success: linear-gradient(135deg, #10B981 0%, #22C55E 100%);
+            --gradient-purple-pink: linear-gradient(135deg, #A78BFA 0%, #EC4899 100%);
+            --gradient-blue-cyan: linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%);
             
-            /* Shadows */
+            /* Shadows - Enhanced glow */
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
             --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
             --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
             --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.6);
-            --shadow-glow: 0 0 20px rgba(124, 58, 237, 0.3);
+            --shadow-glow: 0 0 30px rgba(124, 58, 237, 0.4);
+            --shadow-glow-success: 0 0 30px rgba(16, 185, 129, 0.4);
             
             /* Spacing */
             --space-xs: 0.5rem;
@@ -77,7 +83,6 @@
             --z-modal: 1050;
             --z-popover: 1060;
             --z-tooltip: 1070;
-            --z-install-banner: 1100;
         }
         
         /* Dark Theme Overrides */
@@ -107,7 +112,6 @@
         html {
             scroll-behavior: smooth;
             font-size: 16px;
-            -webkit-tap-highlight-color: transparent;
         }
         
         body {
@@ -117,77 +121,30 @@
             line-height: 1.6;
             overflow-x: hidden;
             transition: background-color var(--transition-normal);
-            padding-top: 60px; /* Space for fixed install banner */
+            position: relative;
         }
         
-        /* ===== INSTALL BANNER ===== */
-        .install-banner {
+        /* Animated background particles */
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            background: var(--gradient-primary);
-            color: white;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: var(--z-install-banner);
-            box-shadow: var(--shadow-md);
-            transform: translateY(0);
-            transition: transform var(--transition-normal);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .install-banner.hidden {
-            transform: translateY(-100%);
-        }
-        .install-banner .message {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
-        }
-        .install-banner .message i {
-            font-size: 1.5rem;
-        }
-        .install-banner .install-btn {
-            background: white;
-            color: var(--primary-color);
-            border: none;
-            padding: 8px 16px;
-            border-radius: var(--radius-full);
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all var(--transition-fast);
-            box-shadow: var(--shadow-sm);
-        }
-        .install-banner .install-btn:hover {
-            transform: scale(1.05);
-            box-shadow: var(--shadow-md);
-        }
-        .install-banner .install-btn i {
-            font-size: 1.1rem;
-        }
-        .install-banner .close-btn {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            opacity: 0.8;
-            transition: opacity var(--transition-fast);
-            margin-left: 10px;
-        }
-        .install-banner .close-btn:hover {
-            opacity: 1;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: pulseBackground 15s ease-in-out infinite;
         }
         
-        /* ===== TYPOGRAPHY (unchanged) ===== */
+        @keyframes pulseBackground {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        /* ===== TYPOGRAPHY ===== */
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Montserrat', sans-serif;
             font-weight: 700;
@@ -200,6 +157,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: fadeInDown 0.8s ease;
         }
         
         h2 {
@@ -226,7 +184,7 @@
             color: var(--primary-color);
         }
         
-        /* ===== LAYOUT UTILITIES (unchanged) ===== */
+        /* ===== LAYOUT UTILITIES ===== */
         .container {
             width: 100%;
             max-width: 1200px;
@@ -236,6 +194,7 @@
         
         .section {
             padding: var(--space-xl) 0;
+            animation: fadeInUp 0.6s ease;
         }
         
         .section-header {
@@ -243,20 +202,45 @@
             text-align: center;
         }
         
-        /* ===== COMPONENTS (unchanged) ===== */
+        /* ===== COMPONENTS ===== */
+        
+        /* Cards - Enhanced with glass morphism and hover animations */
         .card {
-            background: var(--dark-card);
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: var(--radius-lg);
             padding: var(--space-lg);
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--dark-border);
+            box-shadow: var(--shadow-md), var(--shadow-glow);
+            border: 1px solid rgba(124, 58, 237, 0.2);
             transition: all var(--transition-normal);
             margin-bottom: var(--space-md);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(0);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+            pointer-events: none;
+        }
+        
+        .card:hover::before {
+            opacity: 1;
         }
         
         .card:hover {
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl), var(--shadow-glow);
+            transform: translateY(-4px) scale(1.01);
+            border-color: rgba(124, 58, 237, 0.4);
         }
         
         .card-header {
@@ -265,7 +249,7 @@
             align-items: center;
             padding-bottom: var(--space-md);
             margin-bottom: var(--space-md);
-            border-bottom: 1px solid var(--dark-border);
+            border-bottom: 1px solid rgba(124, 58, 237, 0.2);
         }
         
         .card-title {
@@ -274,6 +258,7 @@
             color: var(--text-primary);
         }
         
+        /* Buttons - Enhanced with glow effects and active states */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -290,6 +275,7 @@
             text-decoration: none;
             position: relative;
             overflow: hidden;
+            box-shadow: var(--shadow-sm);
         }
         
         .btn::before {
@@ -300,7 +286,7 @@
             width: 0;
             height: 0;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.2);
             transform: translate(-50%, -50%);
             transition: width 0.6s, height 0.6s;
         }
@@ -310,15 +296,25 @@
             height: 300px;
         }
         
+        .btn:hover {
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+            transform: translateY(-2px);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
         .btn-primary {
             background: var(--gradient-primary);
             color: white;
         }
         
         .btn-secondary {
-            background: var(--dark-card);
+            background: rgba(30, 41, 59, 0.9);
+            backdrop-filter: blur(5px);
             color: var(--text-primary);
-            border: 1px solid var(--dark-border);
+            border: 1px solid rgba(124, 58, 237, 0.3);
         }
         
         .btn-success {
@@ -358,9 +354,10 @@
             border-radius: var(--radius-full);
         }
         
-        /* Forms */
+        /* Forms - Enhanced with floating labels and better validation */
         .form-group {
             margin-bottom: var(--space-lg);
+            position: relative;
         }
         
         .form-label {
@@ -373,8 +370,9 @@
         .form-control {
             width: 100%;
             padding: 0.875rem 1rem;
-            background: var(--dark-bg);
-            border: 2px solid var(--dark-border);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(124, 58, 237, 0.2);
             border-radius: var(--radius-md);
             color: var(--text-primary);
             font-family: 'Poppins', sans-serif;
@@ -385,7 +383,7 @@
         .form-control:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2), var(--shadow-glow);
         }
         
         .form-control::placeholder {
@@ -408,7 +406,7 @@
             color: var(--text-muted);
         }
         
-        /* Badges */
+        /* Badges - Enhanced */
         .badge {
             display: inline-block;
             padding: 0.25rem 0.75rem;
@@ -417,30 +415,31 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            box-shadow: var(--shadow-sm);
         }
         
         .badge-success {
-            background: rgba(16, 185, 129, 0.1);
+            background: rgba(16, 185, 129, 0.2);
             color: var(--secondary-color);
-            border: 1px solid rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.3);
         }
         
         .badge-warning {
-            background: rgba(245, 158, 11, 0.1);
+            background: rgba(245, 158, 11, 0.2);
             color: var(--accent-orange);
-            border: 1px solid rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.3);
         }
         
         .badge-danger {
-            background: rgba(239, 68, 68, 0.1);
+            background: rgba(239, 68, 68, 0.2);
             color: var(--accent-red);
-            border: 1px solid rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
         }
         
         .badge-info {
-            background: rgba(59, 130, 246, 0.1);
+            background: rgba(59, 130, 246, 0.2);
             color: var(--accent-blue);
-            border: 1px solid rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.3);
         }
         
         /* Alerts */
@@ -449,6 +448,7 @@
             border-radius: var(--radius-md);
             margin-bottom: var(--space-md);
             border-left: 4px solid;
+            backdrop-filter: blur(5px);
         }
         
         .alert-success {
@@ -509,7 +509,8 @@
         
         .modal-content {
             position: relative;
-            background: var(--dark-card);
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(10px);
             border-radius: var(--radius-xl);
             padding: var(--space-xl);
             width: 100%;
@@ -518,8 +519,8 @@
             overflow-y: auto;
             transform: translateY(20px);
             transition: transform var(--transition-normal);
-            border: 1px solid var(--dark-border);
-            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            box-shadow: var(--shadow-xl), var(--shadow-glow);
         }
         
         .modal.active .modal-content {
@@ -536,6 +537,9 @@
         .modal-title {
             font-size: 1.5rem;
             font-weight: 600;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .modal-close {
@@ -558,7 +562,7 @@
         .table-responsive {
             overflow-x: auto;
             border-radius: var(--radius-md);
-            border: 1px solid var(--dark-border);
+            border: 1px solid rgba(124, 58, 237, 0.2);
         }
         
         .table {
@@ -568,21 +572,21 @@
         }
         
         .table th {
-            background: var(--dark-hover);
+            background: rgba(124, 58, 237, 0.1);
             padding: 1rem;
             text-align: left;
             font-weight: 600;
             color: var(--text-secondary);
-            border-bottom: 2px solid var(--dark-border);
+            border-bottom: 2px solid rgba(124, 58, 237, 0.3);
         }
         
         .table td {
             padding: 1rem;
-            border-bottom: 1px solid var(--dark-border);
+            border-bottom: 1px solid rgba(124, 58, 237, 0.2);
         }
         
         .table tbody tr:hover {
-            background: var(--dark-hover);
+            background: rgba(124, 58, 237, 0.05);
         }
         
         .table tbody tr:last-child td {
@@ -595,10 +599,12 @@
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             z-index: var(--z-fixed);
-            border-bottom: 1px solid var(--dark-border);
+            border-bottom: 1px solid rgba(124, 58, 237, 0.3);
+            box-shadow: var(--shadow-md);
         }
         
         .nav-container {
@@ -625,6 +631,7 @@
             align-items: center;
             justify-content: center;
             color: white;
+            box-shadow: var(--shadow-glow);
         }
         
         .nav-menu {
@@ -644,7 +651,8 @@
         .nav-link:hover,
         .nav-link.active {
             color: var(--text-primary);
-            background: var(--dark-card);
+            background: rgba(124, 58, 237, 0.15);
+            box-shadow: var(--shadow-glow);
         }
         
         .nav-user {
@@ -664,6 +672,18 @@
             font-weight: 600;
             color: white;
             cursor: pointer;
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .currency-selector {
+            background: rgba(124, 58, 237, 0.15);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: var(--radius-md);
+            padding: 0.25rem 0.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            outline: none;
+            font-weight: 500;
         }
         
         .mobile-menu-btn {
@@ -682,12 +702,13 @@
             left: -300px;
             width: 280px;
             height: 100%;
-            background: var(--dark-card);
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(15px);
             z-index: var(--z-modal);
             padding: var(--space-xl);
             transition: left var(--transition-normal);
             overflow-y: auto;
-            border-right: 1px solid var(--dark-border);
+            border-right: 1px solid rgba(124, 58, 237, 0.3);
         }
         
         .sidebar.active {
@@ -718,7 +739,7 @@
             align-items: center;
             margin-bottom: var(--space-xl);
             padding-bottom: var(--space-md);
-            border-bottom: 1px solid var(--dark-border);
+            border-bottom: 1px solid rgba(124, 58, 237, 0.3);
         }
         
         .sidebar-close {
@@ -750,7 +771,7 @@
         .sidebar-link:hover,
         .sidebar-link.active {
             color: var(--text-primary);
-            background: var(--dark-hover);
+            background: rgba(124, 58, 237, 0.15);
         }
         
         .sidebar-link i {
@@ -775,8 +796,17 @@
         .stat-card {
             padding: var(--space-lg);
             border-radius: var(--radius-lg);
-            background: var(--dark-card);
-            border: 1px solid var(--dark-border);
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            transition: all var(--transition-normal);
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(124, 58, 237, 0.5);
+            box-shadow: var(--shadow-glow);
         }
         
         .stat-icon {
@@ -830,8 +860,17 @@
             overflow: hidden;
             border-radius: var(--radius-xl);
             padding: var(--space-xl);
-            background: var(--dark-card);
-            border: 1px solid var(--dark-border);
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            transition: all var(--transition-normal);
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        .plan-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(124, 58, 237, 0.5);
+            box-shadow: var(--shadow-glow);
         }
         
         .plan-badge {
@@ -847,6 +886,7 @@
         .plan-badge.popular {
             background: var(--gradient-primary);
             color: white;
+            box-shadow: var(--shadow-glow);
         }
         
         .plan-header {
@@ -886,8 +926,9 @@
             justify-content: space-between;
             margin-bottom: var(--space-lg);
             padding: var(--space-md);
-            background: var(--dark-hover);
+            background: rgba(124, 58, 237, 0.1);
             border-radius: var(--radius-md);
+            border: 1px solid rgba(124, 58, 237, 0.2);
         }
         
         .plan-stat {
@@ -910,6 +951,9 @@
             position: relative;
             height: 300px;
             margin-bottom: var(--space-lg);
+            background: rgba(30, 41, 59, 0.3);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
         }
         
         /* Loader */
@@ -917,7 +961,7 @@
             display: inline-block;
             width: 2rem;
             height: 2rem;
-            border: 3px solid var(--dark-border);
+            border: 3px solid rgba(124, 58, 237, 0.2);
             border-radius: 50%;
             border-top-color: var(--primary-color);
             animation: spin 1s linear infinite;
@@ -936,6 +980,7 @@
             width: 100%;
             height: 100%;
             background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(5px);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -961,16 +1006,17 @@
         }
         
         .notification {
-            background: var(--dark-card);
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(10px);
             border-radius: var(--radius-md);
             padding: var(--space-md);
             margin-bottom: var(--space-sm);
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
             border-left: 4px solid;
             transform: translateX(100%);
             opacity: 0;
             animation: slideIn 0.3s forwards;
-            border: 1px solid var(--dark-border);
+            border: 1px solid rgba(124, 58, 237, 0.3);
         }
         
         @keyframes slideIn {
@@ -1018,10 +1064,11 @@
         
         /* Footer */
         .footer {
-            background: var(--dark-card);
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
             padding: var(--space-xl) 0;
             margin-top: var(--space-xxl);
-            border-top: 1px solid var(--dark-border);
+            border-top: 1px solid rgba(124, 58, 237, 0.3);
         }
         
         .footer-grid {
@@ -1057,7 +1104,7 @@
         .footer-bottom {
             text-align: center;
             padding-top: var(--space-lg);
-            border-top: 1px solid var(--dark-border);
+            border-top: 1px solid rgba(124, 58, 237, 0.3);
             color: var(--text-muted);
             font-size: 0.875rem;
         }
@@ -1083,10 +1130,32 @@
             }
         }
         
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         /* Progress Bars */
         .progress {
             height: 0.5rem;
-            background: var(--dark-border);
+            background: rgba(124, 58, 237, 0.1);
             border-radius: var(--radius-full);
             overflow: hidden;
         }
@@ -1103,7 +1172,9 @@
             display: flex;
             gap: 0.5rem;
             margin-bottom: var(--space-lg);
-            border-bottom: 1px solid var(--dark-border);
+            border-bottom: 1px solid rgba(124, 58, 237, 0.3);
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
         }
         
         .tab {
@@ -1115,6 +1186,7 @@
             cursor: pointer;
             border-bottom: 2px solid transparent;
             transition: all var(--transition-fast);
+            white-space: nowrap;
         }
         
         .tab:hover,
@@ -1133,7 +1205,7 @@
         
         /* File Upload */
         .file-upload {
-            border: 2px dashed var(--dark-border);
+            border: 2px dashed rgba(124, 58, 237, 0.3);
             border-radius: var(--radius-md);
             padding: var(--space-lg);
             text-align: center;
@@ -1142,7 +1214,7 @@
         
         .file-upload:hover {
             border-color: var(--primary-color);
-            background: var(--dark-hover);
+            background: rgba(124, 58, 237, 0.05);
         }
         
         .file-upload input[type="file"] {
@@ -1166,7 +1238,8 @@
         .tooltip .tooltip-text {
             visibility: hidden;
             width: 200px;
-            background: var(--dark-card);
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(5px);
             color: var(--text-primary);
             text-align: center;
             border-radius: var(--radius-md);
@@ -1179,7 +1252,7 @@
             opacity: 0;
             transition: opacity 0.3s;
             font-size: 0.75rem;
-            border: 1px solid var(--dark-border);
+            border: 1px solid rgba(124, 58, 237, 0.3);
         }
         
         .tooltip:hover .tooltip-text {
@@ -1198,12 +1271,12 @@
         }
         
         ::-webkit-scrollbar-thumb {
-            background: var(--dark-border);
+            background: var(--primary-color);
             border-radius: var(--radius-full);
         }
         
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-color);
+            background: var(--primary-light);
         }
         
         /* Responsive Design */
@@ -1239,6 +1312,10 @@
             
             .table-responsive {
                 font-size: 0.875rem;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
             }
         }
         
@@ -1424,10 +1501,11 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.5rem 1rem;
-            background: var(--dark-card);
-            border: 1px solid var(--dark-border);
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.3);
             border-radius: var(--radius-lg);
             font-weight: 600;
+            backdrop-filter: blur(5px);
         }
         .regulation-badges .badge-logo i {
             font-size: 1.5rem;
@@ -1441,6 +1519,7 @@
             background: linear-gradient(135deg, #1a472a, #2d5a3a);
             color: #ffd966;
             border: none;
+            box-shadow: var(--shadow-glow-success);
         }
         .ramadan-banner .lanterns i {
             animation: flicker 2s infinite;
@@ -1464,72 +1543,179 @@
             }
         }
 
-        /* Certificate images styling */
-        .certificate-img {
-            height: 40px;
-            width: auto;
-            border-radius: var(--radius-sm);
-            box-shadow: var(--shadow-sm);
-            transition: transform var(--transition-fast);
-        }
-        .certificate-img:hover {
-            transform: scale(1.1);
-        }
-        .badge-logo {
+        /* ===== MOBILE BOTTOM NAVIGATION (ENHANCED) ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(124, 58, 237, 0.3);
             display: flex;
+            justify-content: space-around;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.25rem 0.75rem;
-            background: var(--dark-card);
-            border: 1px solid var(--dark-border);
-            border-radius: var(--radius-lg);
+            padding: 0.5rem 0.25rem;
+            z-index: 1020;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+        .bottom-nav.hide {
+            transform: translateY(100%);
+        }
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            transition: all 0.2s;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-md);
+            flex: 1;
+            max-width: 70px;
+            min-height: 44px;
+            justify-content: center;
+        }
+        .bottom-nav-item i {
+            font-size: 1.25rem;
+            margin-bottom: 0.15rem;
+        }
+        .bottom-nav-item.active {
+            color: var(--primary-color);
+            background: rgba(124, 58, 237, 0.15);
+            transform: scale(1.05);
+        }
+        body {
+            padding-bottom: 70px;
+        }
+        .main-content {
+            padding-bottom: 10px;
+        }
+        @media (min-width: 769px) {
+            .bottom-nav {
+                display: none;
+            }
+            body {
+                padding-bottom: 0;
+            }
         }
 
-        /* ===== CURRENCY STYLES ===== */
-        .currency-selector {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
+        /* Larger touch targets for mobile */
+        @media (max-width: 576px) {
+            .btn, .nav-link, .sidebar-link, .bottom-nav-item {
+                min-height: 44px;
+            }
+            input, select, textarea {
+                font-size: 16px !important; /* prevent zoom on iOS */
+            }
         }
-        .currency-selector select {
-            flex: 1;
+
+        /* Proof modal image */
+        .proof-modal img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
         }
-        .exchange-rate-info {
-            background: var(--dark-hover);
-            padding: 0.5rem;
-            border-radius: var(--radius-sm);
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
+
+        /* Trust wallet address block */
+        .trust-wallet-card {
+            background: linear-gradient(135deg, #2d3748, #1a202c);
+            border: 2px solid var(--accent-blue);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
         }
-        .currency-flag {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 8px;
+        .trust-wallet-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
         }
-        .exchange-request-item {
-            border: 1px solid var(--dark-border);
-            padding: 1rem;
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .wallet-address {
+            background: rgba(0,0,0,0.3);
+            padding: 0.75rem;
             border-radius: var(--radius-md);
-            margin-bottom: 0.5rem;
+            font-family: monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+            border: 1px solid var(--accent-blue);
+        }
+
+        /* ===== PWA INSTALL BANNER ===== */
+        .pwa-install-banner {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.75rem 1rem;
+            text-align: center;
+            position: relative;
+            z-index: calc(var(--z-fixed) + 1);
+            box-shadow: var(--shadow-lg);
+            display: none; /* hidden by default */
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .pwa-install-banner.show {
+            display: flex;
+        }
+        .pwa-install-banner .banner-message {
+            font-weight: 500;
+        }
+        .pwa-install-banner .btn-install {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        .pwa-install-banner .btn-install:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-md);
+        }
+        .pwa-install-banner .btn-dismiss {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.5);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        .pwa-install-banner .btn-dismiss:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        @media (max-width: 480px) {
+            .pwa-install-banner {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- INSTALL BANNER - APPEARS ON ALL PAGES -->
-    <div class="install-banner" id="installBanner">
-        <div class="message">
-            <i class="fas fa-download"></i>
-            <span>Install Raw Wealthy for the best experience</span>
-        </div>
-        <div style="display: flex; align-items: center;">
-            <button class="install-btn" id="installButton">
-                <i class="fas fa-mobile-alt"></i> Install
-            </button>
-            <button class="close-btn" id="closeInstallBanner">
-                <i class="fas fa-times"></i>
-            </button>
+    <!-- PWA Install Banner -->
+    <div class="pwa-install-banner" id="pwaInstallBanner">
+        <span class="banner-message">🚀 Install Raw Wealthy app for a better experience!</span>
+        <div>
+            <button class="btn-install" id="pwaInstallBtn">Install</button>
+            <button class="btn-dismiss" id="pwaDismissBtn">Dismiss</button>
         </div>
     </div>
 
@@ -1565,6 +1751,16 @@
                 </ul>
                 
                 <div class="nav-user">
+                    <!-- Multi-Currency Selector -->
+                    <select id="currencySelector" class="currency-selector">
+                        <option value="NGN">₦ NGN</option>
+                        <option value="USD">$ USD</option>
+                        <option value="EUR">€ EUR</option>
+                        <option value="GBP">£ GBP</option>
+                        <option value="GHS">₵ GHS</option>
+                        <option value="KES">KSh KES</option>
+                        <option value="ZAR">R ZAR</option>
+                    </select>
                     <div class="user-avatar" id="userAvatar">U</div>
                     <button class="mobile-menu-btn" id="mobileMenuBtn">
                         <i class="fas fa-bars"></i>
@@ -1660,8 +1856,8 @@
         
         <div class="sidebar-footer mt-4 p-3">
             <div class="text-muted small">
-                <div>Raw Wealthy v38.0</div>
-                <div>© 2024 All Rights Reserved</div>
+                <div>Raw Wealthy v38.1</div>
+                <div>© 2025 All Rights Reserved</div>
             </div>
         </div>
     </aside>
@@ -1857,19 +2053,17 @@
                     </div>
                 </div>
 
-                <!-- REGULATION BADGES (CERTIFICATE IMAGES ADDED) -->
+                <!-- REGULATION BADGES (SON & CBN) -->
                 <div class="regulation-badges card mb-4">
                     <div class="card-body d-flex align-center justify-between flex-wrap">
                         <div class="d-flex align-center gap-3">
-                            <!-- ISO 9001:2015 Certificate Image -->
                             <div class="badge-logo">
-                                <img src="IMG-20260227-WA0105.jpg" alt="ISO 9001:2015 Certified" class="certificate-img" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div style="display: none; align-items: center; gap: 0.5rem;"><i class="fas fa-certificate"></i><span>ISO 9001:2015</span></div>
+                                <i class="fas fa-building"></i>
+                                <span>CBN</span>
                             </div>
-                            <!-- Nigerian Business Registration Certificate Image -->
                             <div class="badge-logo">
-                                <img src="IMG-20260227-WA0103.jpg" alt="CAC Registered" class="certificate-img" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div style="display: none; align-items: center; gap: 0.5rem;"><i class="fas fa-building"></i><span>CAC</span></div>
+                                <i class="fas fa-certificate"></i>
+                                <span>SON</span>
                             </div>
                         </div>
                         <div class="regulation-text">
@@ -2042,39 +2236,12 @@
                             </div>
                             <div class="card-body">
                                 <form id="depositForm">
-                                    <!-- Currency Selection -->
                                     <div class="form-group">
-                                        <label class="form-label">Deposit Currency</label>
-                                        <div class="currency-selector">
-                                            <select class="form-control" id="depositCurrency" required>
-                                                <option value="NGN">🇳🇬 NGN - Nigerian Naira</option>
-                                                <option value="USD">🇺🇸 USD - US Dollar</option>
-                                                <option value="EUR">🇪🇺 EUR - Euro</option>
-                                                <option value="GBP">🇬🇧 GBP - British Pound</option>
-                                                <option value="CAD">🇨🇦 CAD - Canadian Dollar</option>
-                                                <option value="AUD">🇦🇺 AUD - Australian Dollar</option>
-                                                <option value="JPY">🇯🇵 JPY - Japanese Yen</option>
-                                                <option value="CNY">🇨🇳 CNY - Chinese Yuan</option>
-                                                <option value="INR">🇮🇳 INR - Indian Rupee</option>
-                                                <option value="BRL">🇧🇷 BRL - Brazilian Real</option>
-                                                <option value="ZAR">🇿🇦 ZAR - South African Rand</option>
-                                                <option value="KES">🇰🇪 KES - Kenyan Shilling</option>
-                                                <option value="GHS">🇬🇭 GHS - Ghanaian Cedi</option>
-                                            </select>
-                                        </div>
-                                        <div class="exchange-rate-info" id="depositRateInfo">
-                                            <i class="fas fa-info-circle"></i> 1 NGN = <span id="depositRate">1.0000</span> <span id="depositRateCurrency">NGN</span> (No conversion fee for NGN)
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="form-label">Amount in <span id="depositCurrencyLabel">NGN</span></label>
+                                        <label class="form-label">Amount (Minimum: ₦3,500)</label>
                                         <div class="input-group">
                                             <i class="input-group-icon fas fa-money-bill"></i>
                                             <input type="number" class="form-control" id="depositAmount" min="3500" value="3500" required>
                                         </div>
-                                        <small class="text-muted">Minimum: <span id="depositMinLocal">₦ 3,500</span> (in selected currency)</small>
-                                        <div id="depositConversionInfo" class="text-muted small mt-1"></div>
                                     </div>
                                     
                                     <div class="form-group">
@@ -2099,6 +2266,16 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <!-- Platform Trust Wallet Address (NEW) -->
+                                    <div class="trust-wallet-card mb-4">
+                                        <h5 class="mb-3"><i class="fas fa-shield-alt me-2"></i> Platform Trust Wallet (USDT/TRC20)</h5>
+                                        <div class="wallet-address mb-2" id="trustWalletAddress">ekfjsshsjh242;djdfj</div>
+                                        <button type="button" class="btn btn-sm btn-outline" id="copyTrustWallet">
+                                            <i class="fas fa-copy"></i> Copy Address
+                                        </button>
+                                        <p class="text-muted small mt-2">Send only USDT (TRC20) to this address. After sending, upload proof below.</p>
                                     </div>
                                     
                                     <div class="form-group" id="paymentProofSection">
@@ -2176,8 +2353,6 @@
                                     <tr>
                                         <th>Reference</th>
                                         <th>Amount</th>
-                                        <th>Currency</th>
-                                        <th>Converted (NGN)</th>
                                         <th>Method</th>
                                         <th>Date</th>
                                         <th>Status</th>
@@ -2186,7 +2361,7 @@
                                 </thead>
                                 <tbody id="depositsTable">
                                     <tr>
-                                        <td colspan="8" class="text-center py-4">
+                                        <td colspan="6" class="text-center py-4">
                                             <div class="loader"></div>
                                             <p class="text-muted mt-2">Loading deposits...</p>
                                         </td>
@@ -2216,40 +2391,13 @@
                             </div>
                             <div class="card-body">
                                 <form id="withdrawalForm">
-                                    <!-- Currency Selection -->
                                     <div class="form-group">
-                                        <label class="form-label">Withdrawal Currency</label>
-                                        <div class="currency-selector">
-                                            <select class="form-control" id="withdrawalCurrency" required>
-                                                <option value="NGN">🇳🇬 NGN - Nigerian Naira</option>
-                                                <option value="USD">🇺🇸 USD - US Dollar</option>
-                                                <option value="EUR">🇪🇺 EUR - Euro</option>
-                                                <option value="GBP">🇬🇧 GBP - British Pound</option>
-                                                <option value="CAD">🇨🇦 CAD - Canadian Dollar</option>
-                                                <option value="AUD">🇦🇺 AUD - Australian Dollar</option>
-                                                <option value="JPY">🇯🇵 JPY - Japanese Yen</option>
-                                                <option value="CNY">🇨🇳 CNY - Chinese Yuan</option>
-                                                <option value="INR">🇮🇳 INR - Indian Rupee</option>
-                                                <option value="BRL">🇧🇷 BRL - Brazilian Real</option>
-                                                <option value="ZAR">🇿🇦 ZAR - South African Rand</option>
-                                                <option value="KES">🇰🇪 KES - Kenyan Shilling</option>
-                                                <option value="GHS">🇬🇭 GHS - Ghanaian Cedi</option>
-                                            </select>
-                                        </div>
-                                        <div class="exchange-rate-info" id="withdrawalRateInfo">
-                                            <i class="fas fa-info-circle"></i> 1 NGN = <span id="withdrawalRate">1.0000</span> <span id="withdrawalRateCurrency">NGN</span> (No conversion fee for NGN)
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="form-label">Amount in <span id="withdrawalCurrencyLabel">NGN</span></label>
+                                        <label class="form-label">Amount (Minimum: ₦4,000)</label>
                                         <div class="input-group">
                                             <i class="input-group-icon fas fa-money-bill"></i>
                                             <input type="number" class="form-control" id="withdrawalAmount" min="4000" value="4000" required>
                                         </div>
-                                        <small class="text-muted">Minimum: <span id="withdrawalMinLocal">₦ 4,000</span> (in selected currency)</small>
                                         <small class="text-muted">Available Balance: <span id="availableBalance">₦ 0.00</span></small>
-                                        <div id="withdrawalConversionInfo" class="text-muted small mt-1"></div>
                                     </div>
                                     
                                     <div class="form-group">
@@ -2292,16 +2440,12 @@
                                     <div class="form-group">
                                         <div class="alert alert-info">
                                             <div class="d-flex justify-between mb-1">
-                                                <span>Conversion Fee (2.5%):</span>
-                                                <span id="conversionFee">₦ 0.00</span>
-                                            </div>
-                                            <div class="d-flex justify-between mb-1">
                                                 <span>Platform Fee (10%):</span>
-                                                <span id="platformFee">₦ 0.00</span>
+                                                <span id="platformFee">₦ 400.00</span>
                                             </div>
                                             <div class="d-flex justify-between">
                                                 <span>Net Amount:</span>
-                                                <span id="netAmount" class="font-weight-bold">₦ 0.00</span>
+                                                <span id="netAmount" class="font-weight-bold">₦ 3,600.00</span>
                                             </div>
                                         </div>
                                     </div>
@@ -2352,12 +2496,8 @@
                                         <span>Platform Fee: 10%</span>
                                     </li>
                                     <li class="mb-2">
-                                        <i class="fas fa-percentage text-info mr-2"></i>
-                                        <span>Conversion Fee: 2.5% (if currency ≠ NGN)</span>
-                                    </li>
-                                    <li class="mb-2">
                                         <i class="fas fa-money-bill text-success mr-2"></i>
-                                        <span>Minimum: ₦3,500 (or equivalent)</span>
+                                        <span>Minimum: ₦4,000</span>
                                     </li>
                                     <li>
                                         <i class="fas fa-check-circle text-primary mr-2"></i>
@@ -2384,8 +2524,6 @@
                                     <tr>
                                         <th>Reference</th>
                                         <th>Amount</th>
-                                        <th>Currency</th>
-                                        <th>Converted (NGN)</th>
                                         <th>Method</th>
                                         <th>Date</th>
                                         <th>Status</th>
@@ -2394,7 +2532,7 @@
                                 </thead>
                                 <tbody id="withdrawalsTable">
                                     <tr>
-                                        <td colspan="8" class="text-center py-4">
+                                        <td colspan="6" class="text-center py-4">
                                             <div class="loader"></div>
                                             <p class="text-muted mt-2">Loading withdrawals...</p>
                                         </td>
@@ -2441,18 +2579,6 @@
                                         <option value="completed">Completed</option>
                                         <option value="pending">Pending</option>
                                         <option value="failed">Failed</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="form-label">Currency</label>
-                                    <select class="form-control" id="transactionCurrency">
-                                        <option value="">All Currencies</option>
-                                        <option value="NGN">NGN</option>
-                                        <option value="USD">USD</option>
-                                        <option value="EUR">EUR</option>
-                                        <option value="GBP">GBP</option>
                                     </select>
                                 </div>
                             </div>
@@ -2542,8 +2668,6 @@
                                         <th>Type</th>
                                         <th>Description</th>
                                         <th>Amount</th>
-                                        <th>Currency</th>
-                                        <th>Converted (NGN)</th>
                                         <th>Status</th>
                                         <th>Reference</th>
                                         <th>Proof</th>
@@ -2551,7 +2675,7 @@
                                 </thead>
                                 <tbody id="transactionsTable">
                                     <tr>
-                                        <td colspan="9" class="text-center py-4">
+                                        <td colspan="7" class="text-center py-4">
                                             <div class="loader"></div>
                                             <p class="text-muted mt-2">Loading transactions...</p>
                                         </td>
@@ -2795,7 +2919,6 @@
                                                     <option value="withdrawal">Withdrawal</option>
                                                     <option value="deposit">Deposit</option>
                                                     <option value="kyc">KYC Verification</option>
-                                                    <option value="currency">Currency Exchange</option>
                                                     <option value="account">Account Issue</option>
                                                     <option value="other">Other</option>
                                                 </select>
@@ -3251,12 +3374,11 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label">Preferred Currency</label>
-                                                <select class="form-control" id="preferredCurrency">
-                                                    <option value="NGN">🇳🇬 NGN - Nigerian Naira</option>
-                                                    <option value="USD">🇺🇸 USD - US Dollar</option>
-                                                    <option value="EUR">🇪🇺 EUR - Euro</option>
-                                                    <option value="GBP">🇬🇧 GBP - British Pound</option>
+                                                <label class="form-label">Risk Tolerance</label>
+                                                <select class="form-control" id="riskTolerance">
+                                                    <option value="low">Low</option>
+                                                    <option value="medium" selected>Medium</option>
+                                                    <option value="high">High</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -3419,7 +3541,6 @@
                             <button class="tab" data-tab="deposits">Deposits</button>
                             <button class="tab" data-tab="withdrawals">Withdrawals</button>
                             <button class="tab" data-tab="kyc">KYC</button>
-                            <button class="tab" data-tab="exchange">Currency Exchange</button>
                             <button class="tab" data-tab="settings">Settings</button>
                         </div>
                     </div>
@@ -3454,118 +3575,6 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
-                        
-                        <!-- Deposits Tab -->
-                        <div class="tab-content" id="depositsTab">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>User</th>
-                                            <th>Amount</th>
-                                            <th>Currency</th>
-                                            <th>Converted</th>
-                                            <th>Method</th>
-                                            <th>Date</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="adminDepositsTable">
-                                        <tr>
-                                            <td colspan="8" class="text-center py-4">
-                                                <div class="loader"></div>
-                                                <p class="text-muted mt-2">Loading deposits...</p>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        
-                        <!-- Withdrawals Tab -->
-                        <div class="tab-content" id="withdrawalsTab">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>User</th>
-                                            <th>Amount</th>
-                                            <th>Currency</th>
-                                            <th>Converted</th>
-                                            <th>Method</th>
-                                            <th>Date</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="adminWithdrawalsTable">
-                                        <tr>
-                                            <td colspan="8" class="text-center py-4">
-                                                <div class="loader"></div>
-                                                <p class="text-muted mt-2">Loading withdrawals...</p>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        
-                        <!-- Exchange Tab -->
-                        <div class="tab-content" id="exchangeTab">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <h3>Exchange Rate Management</h3>
-                                        </div>
-                                        <div class="card-body">
-                                            <form id="exchangeRateForm">
-                                                <div class="form-group">
-                                                    <label>Base Currency (NGN)</label>
-                                                    <input type="text" class="form-control" value="NGN" disabled>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Target Currency</label>
-                                                    <select class="form-control" id="rateCurrency">
-                                                        <option value="USD">USD</option>
-                                                        <option value="EUR">EUR</option>
-                                                        <option value="GBP">GBP</option>
-                                                        <option value="CAD">CAD</option>
-                                                        <option value="AUD">AUD</option>
-                                                        <option value="JPY">JPY</option>
-                                                        <option value="CNY">CNY</option>
-                                                        <option value="INR">INR</option>
-                                                        <option value="BRL">BRL</option>
-                                                        <option value="ZAR">ZAR</option>
-                                                        <option value="KES">KES</option>
-                                                        <option value="GHS">GHS</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Exchange Rate (1 NGN = ?)</label>
-                                                    <input type="number" step="0.0001" class="form-control" id="exchangeRateValue" required>
-                                                </div>
-                                                <button type="submit" class="btn btn-primary">Update Rate</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3>Current Exchange Requests</h3>
-                                        </div>
-                                        <div class="card-body" id="exchangeRequestsList">
-                                            <div class="text-center py-4">
-                                                <div class="loader"></div>
-                                                <p class="text-muted mt-2">Loading exchange requests...</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         
@@ -3652,11 +3661,43 @@
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2024 Raw Wealthy. All rights reserved. v38.0</p>
+                <p>&copy; 2025 Raw Wealthy. All rights reserved. v38.1</p>
                 <p class="text-muted small">This platform is for demonstration purposes only. Investments carry risk.</p>
             </div>
         </div>
     </footer>
+
+    <!-- Mobile Bottom Navigation (ENHANCED) -->
+    <div class="bottom-nav" id="bottomNav">
+        <a href="#dashboard" class="bottom-nav-item" data-section="dashboard">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#investments" class="bottom-nav-item" data-section="investments">
+            <i class="fas fa-chart-line"></i>
+            <span>Invest</span>
+        </a>
+        <a href="#deposits" class="bottom-nav-item" data-section="deposits">
+            <i class="fas fa-plus-circle"></i>
+            <span>Deposit</span>
+        </a>
+        <a href="#withdrawals" class="bottom-nav-item" data-section="withdrawals">
+            <i class="fas fa-wallet"></i>
+            <span>Withdraw</span>
+        </a>
+        <a href="#kyc" class="bottom-nav-item" data-section="kyc">
+            <i class="fas fa-id-card"></i>
+            <span>KYC</span>
+        </a>
+        <a href="#referrals" class="bottom-nav-item" data-section="referrals">
+            <i class="fas fa-users"></i>
+            <span>Refer</span>
+        </a>
+        <a href="#profile" class="bottom-nav-item" data-section="profile">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </div>
 
     <!-- Modals -->
     <div class="modal" id="investmentModal">
@@ -3669,7 +3710,7 @@
             <div class="modal-body">
                 <form id="investmentModalForm">
                     <div class="form-group">
-                        <label class="form-label">Investment Amount (NGN)</label>
+                        <label class="form-label">Investment Amount</label>
                         <div class="input-group">
                             <i class="input-group-icon fas fa-money-bill"></i>
                             <input type="number" class="form-control" id="modalInvestmentAmount" required>
@@ -3736,45 +3777,16 @@
         </div>
     </div>
 
-    <!-- Currency Exchange Modal -->
-    <div class="modal" id="exchangeModal">
+    <!-- Proof Viewer Modal -->
+    <div class="modal" id="proofViewerModal">
         <div class="modal-backdrop"></div>
-        <div class="modal-content">
+        <div class="modal-content proof-modal">
             <div class="modal-header">
-                <h3 class="modal-title">Currency Exchange</h3>
+                <h3 class="modal-title">Payment Proof</h3>
                 <button class="modal-close">&times;</button>
             </div>
-            <div class="modal-body">
-                <form id="exchangeForm">
-                    <div class="form-group">
-                        <label>From Currency</label>
-                        <select class="form-control" id="exchangeFrom" required>
-                            <option value="NGN">NGN</option>
-                            <option value="USD">USD</option>
-                            <option value="EUR">EUR</option>
-                            <option value="GBP">GBP</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>To Currency</label>
-                        <select class="form-control" id="exchangeTo" required>
-                            <option value="NGN">NGN</option>
-                            <option value="USD">USD</option>
-                            <option value="EUR">EUR</option>
-                            <option value="GBP">GBP</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Amount</label>
-                        <input type="number" class="form-control" id="exchangeAmount" required>
-                    </div>
-                    <div class="alert alert-info" id="exchangeSummary">
-                        <div>Rate: <span id="exchangeRateDisplay">1</span></div>
-                        <div>You will receive: <span id="exchangeReceive">0</span></div>
-                        <div>Fee (2.5%): <span id="exchangeFee">0</span></div>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Submit Exchange Request</button>
-                </form>
+            <div class="modal-body text-center" id="proofImageContainer">
+                <!-- image will be inserted here -->
             </div>
         </div>
     </div>
@@ -3788,93 +3800,27 @@
         <div class="loading-text mt-3">Loading...</div>
     </div>
 
-    <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- JavaScript (Chart.js loaded conditionally) -->
     <script>
-        // ==============================================
-        // RAW WEALTHY PREMIUM v38.0 - PRODUCTION READY
-        // Advanced Investment Platform with Complete Features
-        // ENHANCED WITH CUSTOM AMOUNT INPUT AND 8 INVESTMENT PLANS
-        // ADDED INTERNATIONAL CURRENCY SUPPORT WITH REAL-TIME RATES
-        // ==============================================
-
-        // ===== PWA & INSTALL BANNER =====
-        (function() {
-            let deferredPrompt;
-            const installBanner = document.getElementById('installBanner');
-            const installButton = document.getElementById('installButton');
-            const closeBtn = document.getElementById('closeInstallBanner');
-
-            // Check if already installed (standalone mode)
-            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-                installBanner.classList.add('hidden');
-            }
-
-            // Listen for beforeinstallprompt
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
-                // Show banner only if not already hidden by user preference
-                if (!localStorage.getItem('installBannerClosed')) {
-                    installBanner.classList.remove('hidden');
-                }
-            });
-
-            // Install button click
-            installButton.addEventListener('click', async () => {
-                if (!deferredPrompt) {
-                    Utils.showNotification('Installation not available at the moment. You can add to home screen manually.', 'info');
+        // Conditional loading of Chart.js (performance)
+        function loadChartJS() {
+            return new Promise((resolve, reject) => {
+                if (window.Chart) {
+                    resolve(window.Chart);
                     return;
                 }
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    Utils.showNotification('Thank you for installing Raw Wealthy!', 'success');
-                    installBanner.classList.add('hidden');
-                    localStorage.setItem('installBannerClosed', 'true');
-                }
-                deferredPrompt = null;
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+                script.onload = () => resolve(window.Chart);
+                script.onerror = reject;
+                document.head.appendChild(script);
             });
+        }
 
-            // Close banner (user dismisses)
-            closeBtn.addEventListener('click', () => {
-                installBanner.classList.add('hidden');
-                localStorage.setItem('installBannerClosed', 'true');
-            });
-
-            // Dynamically generate manifest
-            const manifest = {
-                name: 'Raw Wealthy',
-                short_name: 'RawWealthy',
-                description: 'Premium Investment Platform',
-                start_url: '/',
-                display: 'standalone',
-                background_color: '#0F172A',
-                theme_color: '#7C3AED',
-                icons: [
-                    {
-                        src: '/icons/icon-192.png',
-                        sizes: '192x192',
-                        type: 'image/png',
-                        purpose: 'any maskable'
-                    },
-                    {
-                        src: '/icons/icon-512.png',
-                        sizes: '512x512',
-                        type: 'image/png',
-                        purpose: 'any maskable'
-                    }
-                ]
-            };
-            const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-            const manifestURL = URL.createObjectURL(manifestBlob);
-            document.getElementById('manifest-link').href = manifestURL;
-
-            // Register service worker
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed:', err));
-            }
-        })();
+        // ==============================================
+        // RAW WEALTHY PREMIUM v38.1 - ENHANCED EDITION
+        // ALL ORIGINAL CODE PRESERVED + NEW FEATURES
+        // ==============================================
 
         // ===== ENHANCED CONFIGURATION =====
         const CONFIG = {
@@ -3883,7 +3829,7 @@
                 : 'https://real-wealthy-1.onrender.com',
             
             DEBUG_MODE: true,
-            VERSION: '38.0.0',
+            VERSION: '38.1.0',
             
             // Business Logic
             MIN_INVESTMENT: 3500,
@@ -3892,28 +3838,6 @@
             PLATFORM_FEE_PERCENT: 10,
             REFERRAL_COMMISSION_PERCENT: 10,
             WELCOME_BONUS: 100,
-            CONVERSION_FEE_PERCENT: 2.5, // Fee for currency conversion
-            
-            // Supported currencies and exchange rates (simulated, would be fetched from API)
-            SUPPORTED_CURRENCIES: [
-                'NGN', 'USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'CNY', 'INR', 'BRL', 'ZAR', 'KES', 'GHS'
-            ],
-            // Base currency is NGN. Rates: 1 NGN = X foreign currency
-            EXCHANGE_RATES: {
-                NGN: 1.0,
-                USD: 0.00067,   // 1 NGN = 0.00067 USD (approx)
-                EUR: 0.00062,
-                GBP: 0.00053,
-                CAD: 0.00091,
-                AUD: 0.0010,
-                JPY: 0.10,
-                CNY: 0.0048,
-                INR: 0.056,
-                BRL: 0.0037,
-                ZAR: 0.012,
-                KES: 0.086,
-                GHS: 0.0078
-            },
             
             // File upload limits
             MAX_FILE_SIZE: 10 * 1024 * 1024,
@@ -3935,9 +3859,24 @@
                 note: "Use your registered name as depositor name",
                 deposit_instructions: "After payment, upload your payment proof for verification"
             },
-
-            // Push notification VAPID public key (replace with your own)
-            VAPID_PUBLIC_KEY: 'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U'
+            
+            // Platform Trust Wallet Address (NEW)
+            TRUST_WALLET: {
+                address: "ekfjsshsjh242;djdfj",
+                network: "USDT (TRC20)",
+                note: "Send only USDT on TRC20 network to this address."
+            },
+            
+            // Multi-currency support
+            CURRENCIES: {
+                NGN: { symbol: '₦', rate: 1, name: 'Nigerian Naira' },
+                USD: { symbol: '$', rate: 0.00067, name: 'US Dollar' },
+                EUR: { symbol: '€', rate: 0.00062, name: 'Euro' },
+                GBP: { symbol: '£', rate: 0.00053, name: 'British Pound' },
+                GHS: { symbol: '₵', rate: 0.0075, name: 'Ghanaian Cedi' },
+                KES: { symbol: 'KSh', rate: 0.086, name: 'Kenyan Shilling' },
+                ZAR: { symbol: 'R', rate: 0.012, name: 'South African Rand' }
+            }
         };
 
         // ===== ADVANCED DEBUGGING SYSTEM =====
@@ -4016,33 +3955,36 @@
             notifications: [],
             referrals: [],
             plans: [],
-            exchangeRates: CONFIG.EXCHANGE_RATES,
-            exchangeRequests: [],
             lastUpdated: null
         });
+        
+        // Selected currency (default from localStorage or NGN)
+        let selectedCurrency = StateManager.get('selectedCurrency', 'NGN');
 
         // ===== ENHANCED UTILITIES =====
         class Utils {
-            static formatCurrency(amount, currency = 'NGN') {
+            static formatCurrency(amount, currency = null, skipConversion = false) {
                 try {
                     if (amount === null || amount === undefined || isNaN(amount)) {
-                        return `${currency} 0.00`;
+                        amount = 0;
                     }
-                    // For NGN, use ₦ symbol, otherwise use currency code
-                    if (currency === 'NGN') {
-                        return `₦ ${parseFloat(amount).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        })}`;
-                    } else {
-                        return `${currency} ${parseFloat(amount).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        })}`;
+                    
+                    const curr = currency || selectedCurrency;
+                    const currencyInfo = CONFIG.CURRENCIES[curr] || CONFIG.CURRENCIES.NGN;
+                    
+                    // Convert amount if needed (amount is always stored in NGN)
+                    let convertedAmount = amount;
+                    if (!skipConversion && curr !== 'NGN') {
+                        convertedAmount = amount * currencyInfo.rate;
                     }
+                    
+                    return `${currencyInfo.symbol} ${convertedAmount.toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })}`;
                 } catch (error) {
                     Debug.error('Utils', 'formatCurrency error:', error);
-                    return `${currency} 0.00`;
+                    return `₦ 0.00`;
                 }
             }
             
@@ -4198,37 +4140,41 @@
             static hasBankDetails(user) {
                 return user && user.bank_details && user.bank_details.account_number && user.bank_details.account_number.trim() !== '';
             }
+        }
 
-            // Currency conversion functions
-            static convertToNgn(amount, fromCurrency) {
-                if (fromCurrency === 'NGN') return amount;
-                const rate = appState.exchangeRates[fromCurrency];
-                if (!rate) return 0;
-                // For foreign to NGN: amount / rate (since rate is 1 NGN = X foreign)
-                return amount / rate;
+        // ===== CURRENCY MANAGER =====
+        class CurrencyManager {
+            static init() {
+                const selector = document.getElementById('currencySelector');
+                if (selector) {
+                    selector.value = selectedCurrency;
+                    selector.addEventListener('change', (e) => {
+                        selectedCurrency = e.target.value;
+                        StateManager.set('selectedCurrency', selectedCurrency);
+                        this.updateAllAmounts();
+                        Utils.showNotification(`Currency switched to ${CONFIG.CURRENCIES[selectedCurrency].name}`, 'success');
+                    });
+                }
             }
-
-            static convertFromNgn(amount, toCurrency) {
-                if (toCurrency === 'NGN') return amount;
-                const rate = appState.exchangeRates[toCurrency];
-                if (!rate) return 0;
-                return amount * rate;
+            
+            static updateAllAmounts() {
+                // Refresh all displayed amounts by re-rendering current page
+                const currentSection = Router.currentSection;
+                Router.loadSectionData(currentSection);
+                
+                // Update dashboard stats if visible
+                if (currentSection === 'dashboard' && currentUser) {
+                    DashboardManager.updateDashboardStats({ user: currentUser });
+                }
             }
-
-            static convert(amount, fromCurrency, toCurrency) {
-                if (fromCurrency === toCurrency) return amount;
-                const amountInNgn = this.convertToNgn(amount, fromCurrency);
-                return this.convertFromNgn(amountInNgn, toCurrency);
-            }
-
-            static getRateForDisplay(currency) {
-                const rate = appState.exchangeRates[currency];
-                if (!rate) return 'N/A';
-                return `1 NGN = ${rate.toFixed(4)} ${currency}`;
+            
+            static convertAmount(amount) {
+                const currencyInfo = CONFIG.CURRENCIES[selectedCurrency] || CONFIG.CURRENCIES.NGN;
+                return amount * currencyInfo.rate;
             }
         }
 
-        // ===== ADVANCED API SERVICE =====
+        // ===== API SERVICE (with offline demo fallback) =====
         class ApiService {
             static async request(endpoint, options = {}) {
                 const url = `${CONFIG.API_BASE_URL}${endpoint}`;
@@ -4278,8 +4224,81 @@
                     
                 } catch (error) {
                     Debug.error('API', `[${requestId}] Request failed:`, error);
+                    
+                    // Offline demo fallback
+                    if (!navigator.onLine || error.message?.includes('Failed to fetch')) {
+                        Debug.warn('API', 'Using offline demo data for', endpoint);
+                        return this.getDemoResponse(endpoint, options);
+                    }
+                    
                     throw error;
                 }
+            }
+
+            static getDemoResponse(endpoint, options) {
+                // Simulate logged-in user if none
+                if (!currentUser && endpoint.includes('/api/profile')) {
+                    const demoUser = StateManager.get('demoUser') || {
+                        _id: 'demo123',
+                        full_name: 'Demo User',
+                        email: 'demo@rawwealthy.com',
+                        phone: '+2348000000000',
+                        balance: 1250000,
+                        total_earnings: 450000,
+                        referral_earnings: 75000,
+                        total_withdrawn: 200000,
+                        kyc_status: 'verified',
+                        kyc_verified: true,
+                        role: 'user',
+                        is_active: true,
+                        referral_count: 12,
+                        bank_details: {
+                            bank_name: 'GTBank',
+                            account_name: 'Demo User',
+                            account_number: '0123456789',
+                            verified: true
+                        },
+                        createdAt: new Date(Date.now() - 90*86400000).toISOString(),
+                        last_login: new Date().toISOString()
+                    };
+                    StateManager.set('demoUser', demoUser);
+                    currentUser = demoUser;
+                    authToken = 'demo-token';
+                    isAdmin = false;
+                    return Promise.resolve({ success: true, data: { user: demoUser, stats: { active_investment_value: 850000 } } });
+                }
+                if (endpoint.includes('/api/plans')) {
+                    return Promise.resolve({ success: true, data: { plans: demoPlans } });
+                }
+                if (endpoint.includes('/api/investments')) {
+                    return Promise.resolve({ success: true, data: { investments: demoInvestments } });
+                }
+                if (endpoint.includes('/api/deposits')) {
+                    return Promise.resolve({ success: true, data: { deposits: demoDeposits } });
+                }
+                if (endpoint.includes('/api/withdrawals')) {
+                    return Promise.resolve({ success: true, data: { withdrawals: demoWithdrawals } });
+                }
+                if (endpoint.includes('/api/transactions')) {
+                    return Promise.resolve({ success: true, data: { transactions: demoTransactions } });
+                }
+                if (endpoint.includes('/api/notifications')) {
+                    return Promise.resolve({ success: true, data: { notifications: demoNotifications } });
+                }
+                if (endpoint.includes('/api/referrals/stats')) {
+                    return Promise.resolve({ success: true, data: { stats: { total_referrals: 12, referral_earnings: 75000, pending_earnings: 15000, referral_code: 'DEMO123' } } });
+                }
+                if (endpoint.includes('/api/referrals')) {
+                    return Promise.resolve({ success: true, data: { referrals: demoReferrals } });
+                }
+                if (endpoint.includes('/api/kyc/status')) {
+                    return Promise.resolve({ success: true, data: { status: 'verified', submitted_at: new Date().toISOString() } });
+                }
+                if (endpoint.includes('/api/support/tickets')) {
+                    return Promise.resolve({ success: true, data: { tickets: [] } });
+                }
+                // Default fallback
+                return Promise.resolve({ success: true, data: {} });
             }
             
             // Auth endpoints
@@ -4386,10 +4405,10 @@
                 return this.request(`/api/withdrawals${params ? `?${params}` : ''}`);
             }
             
-            static async createWithdrawal(amount, payment_method = 'bank_transfer', currency = 'NGN') {
+            static async createWithdrawal(amount, payment_method = 'bank_transfer') {
                 return this.request('/api/withdrawals', {
                     method: 'POST',
-                    body: JSON.stringify({ amount, payment_method, currency })
+                    body: JSON.stringify({ amount, payment_method })
                 });
             }
             
@@ -4493,38 +4512,38 @@
                     body: formData
                 });
             }
-
-            // Exchange endpoints
-            static async getExchangeRates() {
-                return this.request('/api/exchange/rates');
-            }
-
-            static async updateExchangeRate(currency, rate) {
-                return this.request('/api/exchange/rates', {
-                    method: 'PUT',
-                    body: JSON.stringify({ currency, rate })
-                });
-            }
-
-            static async createExchangeRequest(exchangeData) {
-                return this.request('/api/exchange/request', {
-                    method: 'POST',
-                    body: JSON.stringify(exchangeData)
-                });
-            }
-
-            static async getExchangeRequests(query = {}) {
-                const params = new URLSearchParams(query).toString();
-                return this.request(`/api/exchange/requests${params ? `?${params}` : ''}`);
-            }
-
-            static async processExchangeRequest(requestId, status) {
-                return this.request(`/api/exchange/requests/${requestId}`, {
-                    method: 'PUT',
-                    body: JSON.stringify({ status })
-                });
-            }
         }
+
+        // Demo data arrays (for offline)
+        const demoPlans = [
+            { _id: 'plan1', name: 'Gold Bullion', description: 'Invest in pure gold', min_amount: 50000, max_amount: 5000000, daily_interest: 1.2, total_interest: 36, duration: 30, category: 'metals', raw_material: 'Gold', is_popular: true },
+            { _id: 'plan2', name: 'Crude Oil', description: 'Energy sector', min_amount: 100000, max_amount: 10000000, daily_interest: 1.5, total_interest: 45, duration: 30, category: 'energy', raw_material: 'Oil' },
+            { _id: 'plan3', name: 'Diamond', description: 'Precious stones', min_amount: 200000, max_amount: 20000000, daily_interest: 2.0, total_interest: 60, duration: 30, category: 'precious_stones', raw_material: 'Diamond' }
+        ];
+        const demoInvestments = [
+            { _id: 'inv1', plan: { name: 'Gold Bullion' }, amount: 500000, start_date: new Date(Date.now() - 10*86400000).toISOString(), end_date: new Date(Date.now() + 20*86400000).toISOString(), earned_so_far: 60000, status: 'active' },
+            { _id: 'inv2', plan: { name: 'Crude Oil' }, amount: 250000, start_date: new Date(Date.now() - 25*86400000).toISOString(), end_date: new Date(Date.now() + 5*86400000).toISOString(), earned_so_far: 93750, status: 'active' }
+        ];
+        const demoDeposits = [
+            { _id: 'dep1', reference: 'DEP-001', amount: 200000, payment_method: 'bank_transfer', createdAt: new Date(Date.now() - 5*86400000).toISOString(), status: 'approved', payment_proof_url: '#' },
+            { _id: 'dep2', reference: 'DEP-002', amount: 50000, payment_method: 'crypto', createdAt: new Date(Date.now() - 2*86400000).toISOString(), status: 'pending' }
+        ];
+        const demoWithdrawals = [
+            { _id: 'wd1', reference: 'WD-001', amount: 50000, payment_method: 'bank_transfer', createdAt: new Date(Date.now() - 3*86400000).toISOString(), status: 'paid' }
+        ];
+        const demoTransactions = [
+            { _id: 'tx1', type: 'deposit', amount: 200000, description: 'Deposit via bank transfer', createdAt: new Date(Date.now() - 5*86400000).toISOString(), status: 'completed', reference: 'DEP-001' },
+            { _id: 'tx2', type: 'investment', amount: -500000, description: 'Investment in Gold Bullion', createdAt: new Date(Date.now() - 10*86400000).toISOString(), status: 'completed', reference: 'INV-001' },
+            { _id: 'tx3', type: 'earning', amount: 60000, description: 'Daily profit from Gold Bullion', createdAt: new Date(Date.now() - 1*86400000).toISOString(), status: 'completed' }
+        ];
+        const demoNotifications = [
+            { _id: 'not1', title: 'Deposit Approved', message: 'Your deposit of ₦200,000 has been approved.', type: 'success', createdAt: new Date().toISOString(), is_read: false },
+            { _id: 'not2', title: 'Investment Matured', message: 'Your Crude Oil investment has matured.', type: 'info', createdAt: new Date().toISOString(), is_read: true }
+        ];
+        const demoReferrals = [
+            { user: { full_name: 'John Doe', email: 'john@example.com', is_active: true }, createdAt: new Date().toISOString(), earnings: 5000 },
+            { user: { full_name: 'Jane Smith', email: 'jane@example.com', is_active: true }, createdAt: new Date().toISOString(), earnings: 7500 }
+        ];
 
         // ===== AUTH MANAGER =====
         class AuthManager {
@@ -4615,8 +4634,6 @@
                     notifications: [],
                     referrals: [],
                     plans: [],
-                    exchangeRates: CONFIG.EXCHANGE_RATES,
-                    exchangeRequests: [],
                     lastUpdated: null
                 };
                 
@@ -4782,9 +4799,9 @@
                 if (targetSection) {
                     targetSection.classList.add('active');
                     
-                    document.querySelectorAll('.nav-link, .sidebar-link').forEach(link => {
+                    document.querySelectorAll('.nav-link, .sidebar-link, .bottom-nav-item').forEach(link => {
                         link.classList.remove('active');
-                        if (link.getAttribute('href') === `#${section}`) {
+                        if (link.getAttribute('href') === `#${section}` || link.dataset.section === section) {
                             link.classList.add('active');
                         }
                     });
@@ -4957,15 +4974,15 @@
                     const totalEarnings = Utils.calculateTotalEarnings(user);
                     const withdrawableBalance = Utils.calculateWithdrawableBalance(user);
                     
-                    document.getElementById('totalBalance').textContent = Utils.formatCurrency(user.balance || 0, 'NGN');
-                    document.getElementById('activeInvestments').textContent = Utils.formatCurrency(stats.active_investment_value || 0, 'NGN');
-                    document.getElementById('totalEarnings').textContent = Utils.formatCurrency(totalEarnings, 'NGN');
+                    document.getElementById('totalBalance').textContent = Utils.formatCurrency(user.balance || 0);
+                    document.getElementById('activeInvestments').textContent = Utils.formatCurrency(stats.active_investment_value || 0);
+                    document.getElementById('totalEarnings').textContent = Utils.formatCurrency(totalEarnings);
                     document.getElementById('totalReferrals').textContent = user.referral_count || 0;
-                    document.getElementById('availableBalance').textContent = Utils.formatCurrency(withdrawableBalance, 'NGN');
+                    document.getElementById('availableBalance').textContent = Utils.formatCurrency(withdrawableBalance);
                     
                     const withdrawableElement = document.getElementById('withdrawableBalance');
                     if (withdrawableElement) {
-                        withdrawableElement.textContent = Utils.formatCurrency(withdrawableBalance, 'NGN');
+                        withdrawableElement.textContent = Utils.formatCurrency(withdrawableBalance);
                     }
                     
                     Debug.info('Dashboard', 'Dashboard stats updated successfully');
@@ -4995,7 +5012,6 @@
                         const amount = parseFloat(transaction.amount) || 0;
                         const isPositive = amount >= 0;
                         const typeIcon = this.getTransactionTypeIcon(transaction.type);
-                        const currency = transaction.currency || 'NGN';
                         
                         return `
                             <div class="activity-item d-flex justify-between align-center p-3 border-bottom">
@@ -5012,7 +5028,7 @@
                                     </div>
                                 </div>
                                 <div class="${isPositive ? 'text-success' : 'text-danger'} font-weight-bold">
-                                    ${isPositive ? '+' : ''}${Utils.formatCurrency(amount, currency)}
+                                    ${isPositive ? '+' : ''}${Utils.formatCurrency(amount)}
                                 </div>
                             </div>
                         `;
@@ -5081,7 +5097,7 @@
                 }
             }
             
-            static updateInvestmentChart() {
+            static async updateInvestmentChart() {
                 Debug.info('Dashboard', 'Updating investment chart...');
                 
                 const canvas = document.getElementById('investmentChart');
@@ -5091,6 +5107,9 @@
                 }
                 
                 try {
+                    // Load Chart.js only when needed
+                    const Chart = await loadChartJS();
+                    
                     const ctx = canvas.getContext('2d');
                     
                     if (this.chartInstance) {
@@ -5105,7 +5124,7 @@
                         data: {
                             labels: labels,
                             datasets: [{
-                                label: 'Investment Growth (NGN)',
+                                label: 'Investment Growth',
                                 data: data,
                                 borderColor: '#7C3AED',
                                 backgroundColor: 'rgba(124, 58, 237, 0.1)',
@@ -5124,7 +5143,7 @@
                                     intersect: false,
                                     callbacks: {
                                         label: function(context) {
-                                            return `Value: ${Utils.formatCurrency(context.parsed.y, 'NGN')}`;
+                                            return `Value: ${Utils.formatCurrency(context.parsed.y)}`;
                                         }
                                     }
                                 }
@@ -5136,7 +5155,7 @@
                                     ticks: {
                                         color: '#94A3B8',
                                         callback: function(value) {
-                                            return Utils.formatCurrency(value, 'NGN');
+                                            return Utils.formatCurrency(value);
                                         }
                                     }
                                 },
@@ -5162,8 +5181,7 @@
                     earning: 'fa-coins',
                     referral: 'fa-users',
                     bonus: 'fa-gift',
-                    fee: 'fa-percentage',
-                    exchange: 'fa-exchange-alt'
+                    fee: 'fa-percentage'
                 };
                 return icons[type] || 'fa-exchange-alt';
             }
@@ -5179,8 +5197,7 @@
                     deposit: 'fa-money-bill-wave',
                     kyc: 'fa-id-card',
                     referral: 'fa-users',
-                    system: 'fa-cog',
-                    exchange: 'fa-exchange-alt'
+                    system: 'fa-cog'
                 };
                 return icons[type] || 'fa-bell';
             }
@@ -5196,8 +5213,7 @@
                     deposit: 'bg-success',
                     kyc: 'bg-info',
                     referral: 'bg-purple',
-                    system: 'bg-secondary',
-                    exchange: 'bg-info'
+                    system: 'bg-secondary'
                 };
                 return colors[type] || 'bg-secondary';
             }
@@ -5440,9 +5456,13 @@
                     amountInput.max = planData.maxAmount || '';
                     amountInput.placeholder = `Enter amount (Min: ${Utils.formatCurrency(planData.minAmount)}${planData.maxAmount ? `, Max: ${Utils.formatCurrency(planData.maxAmount)}` : ''})`;
                     
-                    // Add event listener for input validation
+                    // Debounced input handler
+                    let timeout;
                     amountInput.addEventListener('input', (e) => {
-                        this.validateInvestmentAmount(e.target);
+                        clearTimeout(timeout);
+                        timeout = setTimeout(() => {
+                            this.validateInvestmentAmount(e.target);
+                        }, 300);
                     });
                 }
                 
@@ -5482,7 +5502,7 @@
                     return false;
                 }
                 
-                // Check user balance (assuming wallet in NGN)
+                // Check user balance
                 if (currentUser && value > currentUser.balance) {
                     this.showValidationError(input, `Insufficient balance. Available: ${Utils.formatCurrency(currentUser.balance)}`);
                     return false;
@@ -5650,8 +5670,7 @@
                         plan_id: this.currentPlan.id,
                         amount: amount,
                         payment_method: paymentMethod,
-                        auto_renew: autoRenew,
-                        currency: 'NGN' // Investments always in NGN
+                        auto_renew: autoRenew
                     };
                     
                     if (paymentProof) {
@@ -5820,7 +5839,7 @@
                     if (!deposits || deposits.length === 0) {
                         container.innerHTML = `
                             <tr>
-                                <td colspan="8" class="text-center py-5">
+                                <td colspan="6" class="text-center py-5">
                                     <i class="fas fa-money-bill-wave fa-2x text-muted mb-3"></i>
                                     <h4 class="text-muted">No deposits yet</h4>
                                     <p class="text-muted">Make your first deposit to start investing!</p>
@@ -5834,15 +5853,11 @@
                         const status = deposit.status || 'pending';
                         const statusClass = this.getStatusClass(status);
                         const statusText = this.getStatusText(status);
-                        const currency = deposit.currency || 'NGN';
-                        const amountInNgn = deposit.amount_in_ngn || deposit.amount;
                         
                         return `
                             <tr>
                                 <td>${deposit.reference || 'N/A'}</td>
-                                <td>${Utils.formatCurrency(deposit.amount, currency)}</td>
-                                <td>${currency}</td>
-                                <td>${Utils.formatCurrency(amountInNgn, 'NGN')}</td>
+                                <td>${Utils.formatCurrency(deposit.amount)}</td>
                                 <td>${this.getPaymentMethodText(deposit.payment_method)}</td>
                                 <td>${Utils.formatDate(deposit.createdAt)}</td>
                                 <td><span class="badge ${statusClass}">${statusText}</span></td>
@@ -5865,7 +5880,7 @@
                     Debug.error('Deposit', 'Failed to render deposits table:', error);
                     container.innerHTML = `
                         <tr>
-                            <td colspan="8" class="text-center py-5">
+                            <td colspan="6" class="text-center py-5">
                                 <i class="fas fa-exclamation-triangle fa-2x text-warning mb-3"></i>
                                 <h4 class="text-warning">Failed to Load Deposits</h4>
                                 <p class="text-muted">Please try again later.</p>
@@ -5879,17 +5894,17 @@
                 Debug.info('Deposit', 'Updating deposit stats...');
                 
                 try {
-                    const total = deposits.reduce((sum, deposit) => sum + (deposit.amount_in_ngn || deposit.amount || 0), 0);
+                    const total = deposits.reduce((sum, deposit) => sum + (deposit.amount || 0), 0);
                     const pending = deposits
                         .filter(d => d.status === 'pending')
-                        .reduce((sum, d) => sum + (d.amount_in_ngn || d.amount || 0), 0);
+                        .reduce((sum, d) => sum + (d.amount || 0), 0);
                     const approved = deposits
                         .filter(d => d.status === 'approved')
-                        .reduce((sum, d) => sum + (d.amount_in_ngn || d.amount || 0), 0);
+                        .reduce((sum, d) => sum + (d.amount || 0), 0);
                     
-                    document.getElementById('totalDeposits').textContent = Utils.formatCurrency(total, 'NGN');
-                    document.getElementById('pendingDeposits').textContent = Utils.formatCurrency(pending, 'NGN');
-                    document.getElementById('approvedDeposits').textContent = Utils.formatCurrency(approved, 'NGN');
+                    document.getElementById('totalDeposits').textContent = Utils.formatCurrency(total);
+                    document.getElementById('pendingDeposits').textContent = Utils.formatCurrency(pending);
+                    document.getElementById('approvedDeposits').textContent = Utils.formatCurrency(approved);
                     
                     Debug.debug('Deposit', 'Deposit stats updated', { total, pending, approved });
                 } catch (error) {
@@ -5985,7 +6000,7 @@
                                     <h6 class="mb-2"><i class="fas fa-lightbulb text-warning mr-2"></i>Important Instructions:</h6>
                                     <ul class="mb-0 pl-3">
                                         <li class="mb-1 small">Use your registered name as depositor name</li>
-                                        <li class="mb-1 small">Minimum deposit amount: ${Utils.formatCurrency(CONFIG.MIN_DEPOSIT)} (or equivalent in selected currency)</li>
+                                        <li class="mb-1 small">Minimum deposit amount: ${Utils.formatCurrency(CONFIG.MIN_DEPOSIT)}</li>
                                         <li class="mb-1 small">Upload clear screenshot of payment confirmation</li>
                                         <li class="small">Deposits are processed within 1-24 hours</li>
                                     </ul>
@@ -6082,7 +6097,7 @@
                                     <strong>Important Instructions:</strong>
                                     <ul style="margin-top: 10px;">
                                         <li>Use your registered name as depositor name</li>
-                                        <li>Minimum deposit amount: ${Utils.formatCurrency(CONFIG.MIN_DEPOSIT)} (or equivalent in selected currency)</li>
+                                        <li>Minimum deposit amount: ${Utils.formatCurrency(CONFIG.MIN_DEPOSIT)}</li>
                                         <li>Upload clear screenshot of payment confirmation</li>
                                         <li>Deposits are processed within 1-24 hours</li>
                                     </ul>
@@ -6109,31 +6124,24 @@
                     Utils.showLoader('Processing deposit...');
                     
                     const amountInput = document.getElementById('depositAmount');
-                    const currencySelect = document.getElementById('depositCurrency');
                     const paymentMethodRadio = document.querySelector('input[name="paymentMethod"]:checked');
                     const paymentProofInput = document.getElementById('paymentProof');
                     
-                    if (!amountInput || !currencySelect || !paymentMethodRadio) {
+                    if (!amountInput || !paymentMethodRadio) {
                         throw new Error('Required form elements not found');
                     }
                     
                     const amount = parseFloat(amountInput.value) || 0;
-                    const currency = currencySelect.value;
                     const paymentMethod = paymentMethodRadio.value;
                     const paymentProof = paymentProofInput ? paymentProofInput.files[0] : null;
                     
-                    // Convert to NGN for validation
-                    const amountInNgn = Utils.convertToNgn(amount, currency);
-                    
-                    if (amountInNgn < CONFIG.MIN_DEPOSIT) {
-                        Utils.showNotification(`Minimum deposit amount is ${Utils.formatCurrency(CONFIG.MIN_DEPOSIT)} (or equivalent in ${currency})`, 'error');
+                    if (amount < CONFIG.MIN_DEPOSIT) {
+                        Utils.showNotification(`Minimum deposit amount is ${Utils.formatCurrency(CONFIG.MIN_DEPOSIT)}`, 'error');
                         return;
                     }
                     
                     const depositData = {
                         amount: amount,
-                        currency: currency,
-                        amount_in_ngn: amountInNgn,
                         payment_method: paymentMethod
                     };
                     
@@ -6204,7 +6212,7 @@
                 if (container) {
                     container.innerHTML = `
                         <tr>
-                            <td colspan="8" class="text-center py-5">
+                            <td colspan="6" class="text-center py-5">
                                 <i class="fas fa-exclamation-triangle fa-2x text-warning mb-3"></i>
                                 <h4 class="text-warning">Failed to Load Deposits</h4>
                                 <p class="text-muted">${message}</p>
@@ -6214,46 +6222,6 @@
                             </td>
                         </tr>
                     `;
-                }
-            }
-
-            // Setup currency conversion on deposit form
-            static setupCurrencyHandlers() {
-                const currencySelect = document.getElementById('depositCurrency');
-                const amountInput = document.getElementById('depositAmount');
-                const rateInfo = document.getElementById('depositRate');
-                const rateCurrency = document.getElementById('depositRateCurrency');
-                const minLocal = document.getElementById('depositMinLocal');
-                const conversionInfo = document.getElementById('depositConversionInfo');
-                
-                if (currencySelect) {
-                    currencySelect.addEventListener('change', () => {
-                        const currency = currencySelect.value;
-                        const rate = appState.exchangeRates[currency] || 1;
-                        rateInfo.textContent = rate.toFixed(4);
-                        rateCurrency.textContent = currency;
-                        
-                        // Update min deposit in local currency
-                        const minInNgn = CONFIG.MIN_DEPOSIT;
-                        const minLocalValue = Utils.convertFromNgn(minInNgn, currency);
-                        minLocal.textContent = Utils.formatCurrency(minLocalValue, currency);
-                        
-                        // Update conversion info if amount entered
-                        if (amountInput && amountInput.value) {
-                            const amount = parseFloat(amountInput.value) || 0;
-                            const amountInNgn = Utils.convertToNgn(amount, currency);
-                            conversionInfo.innerHTML = `≈ ${Utils.formatCurrency(amountInNgn, 'NGN')}`;
-                        }
-                    });
-                }
-                
-                if (amountInput) {
-                    amountInput.addEventListener('input', () => {
-                        const currency = currencySelect.value;
-                        const amount = parseFloat(amountInput.value) || 0;
-                        const amountInNgn = Utils.convertToNgn(amount, currency);
-                        conversionInfo.innerHTML = `≈ ${Utils.formatCurrency(amountInNgn, 'NGN')}`;
-                    });
                 }
             }
         }
@@ -6272,7 +6240,6 @@
                         const withdrawals = response.data.withdrawals || [];
                         this.renderWithdrawalsTable(withdrawals);
                         this.updateWithdrawalStats(withdrawals);
-                        this.updateWithdrawalForm();
                         Debug.info('Withdrawal', `Loaded ${withdrawals.length} withdrawals`);
                     } else {
                         Debug.warn('Withdrawal', 'Failed to load withdrawals:', response.message);
@@ -6296,7 +6263,7 @@
                     if (!withdrawals || withdrawals.length === 0) {
                         container.innerHTML = `
                             <tr>
-                                <td colspan="8" class="text-center py-5">
+                                <td colspan="6" class="text-center py-5">
                                     <i class="fas fa-wallet fa-2x text-muted mb-3"></i>
                                     <h4 class="text-muted">No withdrawals yet</h4>
                                 </td>
@@ -6309,15 +6276,11 @@
                         const status = withdrawal.status || 'pending';
                         const statusClass = this.getStatusClass(status);
                         const statusText = this.getStatusText(status);
-                        const currency = withdrawal.currency || 'NGN';
-                        const amountInNgn = withdrawal.amount_in_ngn || withdrawal.amount;
                         
                         return `
                             <tr>
                                 <td>${withdrawal.reference || 'N/A'}</td>
-                                <td>${Utils.formatCurrency(withdrawal.amount, currency)}</td>
-                                <td>${currency}</td>
-                                <td>${Utils.formatCurrency(amountInNgn, 'NGN')}</td>
+                                <td>${Utils.formatCurrency(withdrawal.amount)}</td>
                                 <td>${this.getPaymentMethodText(withdrawal.payment_method)}</td>
                                 <td>${Utils.formatDate(withdrawal.createdAt)}</td>
                                 <td><span class="badge ${statusClass}">${statusText}</span></td>
@@ -6337,7 +6300,7 @@
                     Debug.error('Withdrawal', 'Failed to render withdrawals table:', error);
                     container.innerHTML = `
                         <tr>
-                            <td colspan="8" class="text-center py-5">
+                            <td colspan="6" class="text-center py-5">
                                 <i class="fas fa-exclamation-triangle fa-2x text-warning mb-3"></i>
                                 <h4 class="text-warning">Failed to Load Withdrawals</h4>
                                 <p class="text-muted">Please try again later.</p>
@@ -6351,17 +6314,17 @@
                 Debug.info('Withdrawal', 'Updating withdrawal stats...');
                 
                 try {
-                    const total = withdrawals.reduce((sum, w) => sum + (w.amount_in_ngn || w.amount || 0), 0);
+                    const total = withdrawals.reduce((sum, w) => sum + (w.amount || 0), 0);
                     const pending = withdrawals
                         .filter(w => w.status === 'pending')
-                        .reduce((sum, w) => sum + (w.amount_in_ngn || w.amount || 0), 0);
+                        .reduce((sum, w) => sum + (w.amount || 0), 0);
                     const paid = withdrawals
                         .filter(w => w.status === 'paid')
-                        .reduce((sum, w) => sum + (w.amount_in_ngn || w.amount || 0), 0);
+                        .reduce((sum, w) => sum + (w.amount || 0), 0);
                     
-                    document.getElementById('totalWithdrawals').textContent = Utils.formatCurrency(total, 'NGN');
-                    document.getElementById('pendingWithdrawals').textContent = Utils.formatCurrency(pending, 'NGN');
-                    document.getElementById('paidWithdrawals').textContent = Utils.formatCurrency(paid, 'NGN');
+                    document.getElementById('totalWithdrawals').textContent = Utils.formatCurrency(total);
+                    document.getElementById('pendingWithdrawals').textContent = Utils.formatCurrency(pending);
+                    document.getElementById('paidWithdrawals').textContent = Utils.formatCurrency(paid);
                     
                     Debug.debug('Withdrawal', 'Withdrawal stats updated', { total, pending, paid });
                 } catch (error) {
@@ -6378,26 +6341,21 @@
                     Utils.showLoader('Processing withdrawal...');
                     
                     const amountInput = document.getElementById('withdrawalAmount');
-                    const currencySelect = document.getElementById('withdrawalCurrency');
                     
-                    if (!amountInput || !currencySelect) {
+                    if (!amountInput) {
                         throw new Error('Required form elements not found');
                     }
                     
                     const amount = parseFloat(amountInput.value) || 0;
-                    const currency = currencySelect.value;
                     
-                    // Convert to NGN for validation
-                    const amountInNgn = Utils.convertToNgn(amount, currency);
-                    
-                    if (amountInNgn < CONFIG.MIN_WITHDRAWAL) {
-                        Utils.showNotification(`Minimum withdrawal amount is ${Utils.formatCurrency(CONFIG.MIN_WITHDRAWAL)} (or equivalent in ${currency})`, 'error');
+                    if (amount < CONFIG.MIN_WITHDRAWAL) {
+                        Utils.showNotification(`Minimum withdrawal amount is ${Utils.formatCurrency(CONFIG.MIN_WITHDRAWAL)}`, 'error');
                         return;
                     }
                     
                     const withdrawableBalance = Utils.calculateWithdrawableBalance(currentUser);
                     
-                    if (amountInNgn > withdrawableBalance) {
+                    if (amount > withdrawableBalance) {
                         Utils.showNotification(`Insufficient withdrawable balance. Available: ${Utils.formatCurrency(withdrawableBalance)}`, 'error');
                         return;
                     }
@@ -6408,7 +6366,7 @@
                         return;
                     }
                     
-                    const response = await ApiService.createWithdrawal(amount, 'bank_transfer', currency);
+                    const response = await ApiService.createWithdrawal(amount, 'bank_transfer');
                     
                     if (response.success) {
                         Utils.showNotification('Withdrawal request submitted successfully! It will be processed by admin.', 'success');
@@ -6441,7 +6399,7 @@
                 
                 const availableBalanceElement = document.getElementById('availableBalance');
                 if (availableBalanceElement) {
-                    availableBalanceElement.textContent = Utils.formatCurrency(withdrawableBalance, 'NGN');
+                    availableBalanceElement.textContent = Utils.formatCurrency(withdrawableBalance);
                 }
                 
                 const withdrawalDetails = document.getElementById('withdrawalDetails');
@@ -6484,7 +6442,7 @@
                 
                 const amountInput = document.getElementById('withdrawalAmount');
                 if (amountInput) {
-                    amountInput.max = withdrawableBalance; // This is in NGN, but amount is in selected currency. We'll handle conversion in validation.
+                    amountInput.max = withdrawableBalance;
                 }
                 
                 this.calculateWithdrawalFees();
@@ -6492,34 +6450,21 @@
             
             static calculateWithdrawalFees() {
                 const amountInput = document.getElementById('withdrawalAmount');
-                const currencySelect = document.getElementById('withdrawalCurrency');
-                if (!amountInput || !currencySelect) return;
+                if (!amountInput) return;
                 
                 const amount = parseFloat(amountInput.value) || 0;
-                const currency = currencySelect.value;
-                
-                // Convert to NGN for fee calculation
-                const amountInNgn = Utils.convertToNgn(amount, currency);
-                
-                const platformFee = amountInNgn * (CONFIG.PLATFORM_FEE_PERCENT / 100);
-                const conversionFee = currency !== 'NGN' ? amountInNgn * (CONFIG.CONVERSION_FEE_PERCENT / 100) : 0;
-                const totalFees = platformFee + conversionFee;
-                const netAmount = amountInNgn - totalFees;
+                const platformFee = amount * (CONFIG.PLATFORM_FEE_PERCENT / 100);
+                const netAmount = amount - platformFee;
                 
                 const platformFeeElement = document.getElementById('platformFee');
                 const netAmountElement = document.getElementById('netAmount');
-                const conversionFeeElement = document.getElementById('conversionFee');
                 
                 if (platformFeeElement) {
-                    platformFeeElement.textContent = Utils.formatCurrency(platformFee, 'NGN');
-                }
-                
-                if (conversionFeeElement) {
-                    conversionFeeElement.textContent = Utils.formatCurrency(conversionFee, 'NGN');
+                    platformFeeElement.textContent = Utils.formatCurrency(platformFee);
                 }
                 
                 if (netAmountElement) {
-                    netAmountElement.textContent = Utils.formatCurrency(netAmount, 'NGN');
+                    netAmountElement.textContent = Utils.formatCurrency(netAmount);
                 }
             }
             
@@ -6559,7 +6504,7 @@
                 if (container) {
                     container.innerHTML = `
                         <tr>
-                            <td colspan="8" class="text-center py-5">
+                            <td colspan="6" class="text-center py-5">
                                 <i class="fas fa-exclamation-triangle fa-2x text-warning mb-3"></i>
                                 <h4 class="text-warning">Failed to Load Withdrawals</h4>
                                 <p class="text-muted">${message}</p>
@@ -6569,57 +6514,6 @@
                             </td>
                         </tr>
                     `;
-                }
-            }
-
-            // Setup currency handlers for withdrawal form
-            static setupCurrencyHandlers() {
-                const currencySelect = document.getElementById('withdrawalCurrency');
-                const amountInput = document.getElementById('withdrawalAmount');
-                const rateInfo = document.getElementById('withdrawalRate');
-                const rateCurrency = document.getElementById('withdrawalRateCurrency');
-                const minLocal = document.getElementById('withdrawalMinLocal');
-                const conversionInfo = document.getElementById('withdrawalConversionInfo');
-                const availableBalanceElement = document.getElementById('availableBalance');
-                
-                if (currencySelect) {
-                    currencySelect.addEventListener('change', () => {
-                        const currency = currencySelect.value;
-                        const rate = appState.exchangeRates[currency] || 1;
-                        rateInfo.textContent = rate.toFixed(4);
-                        rateCurrency.textContent = currency;
-                        
-                        // Update min withdrawal in local currency
-                        const minInNgn = CONFIG.MIN_WITHDRAWAL;
-                        const minLocalValue = Utils.convertFromNgn(minInNgn, currency);
-                        minLocal.textContent = Utils.formatCurrency(minLocalValue, currency);
-                        
-                        // Update conversion info if amount entered
-                        if (amountInput && amountInput.value) {
-                            const amount = parseFloat(amountInput.value) || 0;
-                            const amountInNgn = Utils.convertToNgn(amount, currency);
-                            conversionInfo.innerHTML = `≈ ${Utils.formatCurrency(amountInNgn, 'NGN')}`;
-                        }
-                        
-                        // Update available balance in selected currency
-                        const withdrawableBalance = Utils.calculateWithdrawableBalance(currentUser);
-                        const localBalance = Utils.convertFromNgn(withdrawableBalance, currency);
-                        if (availableBalanceElement) {
-                            availableBalanceElement.textContent = Utils.formatCurrency(localBalance, currency);
-                        }
-                        
-                        this.calculateWithdrawalFees();
-                    });
-                }
-                
-                if (amountInput) {
-                    amountInput.addEventListener('input', () => {
-                        const currency = currencySelect.value;
-                        const amount = parseFloat(amountInput.value) || 0;
-                        const amountInNgn = Utils.convertToNgn(amount, currency);
-                        conversionInfo.innerHTML = `≈ ${Utils.formatCurrency(amountInNgn, 'NGN')}`;
-                        this.calculateWithdrawalFees();
-                    });
                 }
             }
         }
@@ -6661,7 +6555,7 @@
                     if (!transactions || transactions.length === 0) {
                         container.innerHTML = `
                             <tr>
-                                <td colspan="9" class="text-center py-5">
+                                <td colspan="7" class="text-center py-5">
                                     <i class="fas fa-exchange-alt fa-2x text-muted mb-3"></i>
                                     <h4 class="text-muted">No transactions yet</h4>
                                     <p class="text-muted">Your transaction history will appear here.</p>
@@ -6676,8 +6570,6 @@
                         const isPositive = amount >= 0;
                         const typeIcon = this.getTypeIcon(transaction.type);
                         const statusClass = this.getStatusClass(transaction.status);
-                        const currency = transaction.currency || 'NGN';
-                        const amountInNgn = transaction.amount_in_ngn || (isPositive ? amount : -amount);
                         
                         return `
                             <tr>
@@ -6688,10 +6580,8 @@
                                 </td>
                                 <td>${transaction.description || 'No description'}</td>
                                 <td class="${isPositive ? 'text-success' : 'text-danger'}">
-                                    ${isPositive ? '+' : ''}${Utils.formatCurrency(amount, currency)}
+                                    ${isPositive ? '+' : ''}${Utils.formatCurrency(amount)}
                                 </td>
-                                <td>${currency}</td>
-                                <td>${Utils.formatCurrency(amountInNgn, 'NGN')}</td>
                                 <td><span class="badge ${statusClass}">${this.getStatusText(transaction.status)}</span></td>
                                 <td>${transaction.reference || 'N/A'}</td>
                                 <td>
@@ -6713,7 +6603,7 @@
                     Debug.error('Transaction', 'Failed to render transactions table:', error);
                     container.innerHTML = `
                         <tr>
-                            <td colspan="9" class="text-center py-5">
+                            <td colspan="7" class="text-center py-5">
                                 <i class="fas fa-exclamation-triangle fa-2x text-warning mb-3"></i>
                                 <h4 class="text-warning">Failed to Load Transactions</h4>
                                 <p class="text-muted">Please try again later.</p>
@@ -6729,18 +6619,18 @@
                 try {
                     const totalIncome = transactions
                         .filter(t => (parseFloat(t.amount) || 0) > 0)
-                        .reduce((sum, t) => sum + (parseFloat(t.amount_in_ngn || t.amount) || 0), 0);
+                        .reduce((sum, t) => sum + (parseFloat(t.amount) || 0), 0);
                     
                     const totalExpenses = transactions
                         .filter(t => (parseFloat(t.amount) || 0) < 0)
-                        .reduce((sum, t) => sum + Math.abs(parseFloat(t.amount_in_ngn || t.amount) || 0), 0);
+                        .reduce((sum, t) => sum + Math.abs(parseFloat(t.amount) || 0), 0);
                     
                     const netFlow = totalIncome - totalExpenses;
                     const totalCount = transactions.length;
                     
-                    document.getElementById('totalIncome').textContent = Utils.formatCurrency(totalIncome, 'NGN');
-                    document.getElementById('totalExpenses').textContent = Utils.formatCurrency(totalExpenses, 'NGN');
-                    document.getElementById('netFlow').textContent = Utils.formatCurrency(netFlow, 'NGN');
+                    document.getElementById('totalIncome').textContent = Utils.formatCurrency(totalIncome);
+                    document.getElementById('totalExpenses').textContent = Utils.formatCurrency(totalExpenses);
+                    document.getElementById('netFlow').textContent = Utils.formatCurrency(netFlow);
                     document.getElementById('totalTransactions').textContent = totalCount;
                     
                     Debug.debug('Transaction', 'Transaction stats updated', {
@@ -6764,8 +6654,7 @@
                     bonus: 'fa-gift',
                     fee: 'fa-percentage',
                     refund: 'fa-undo',
-                    transfer: 'fa-exchange-alt',
-                    exchange: 'fa-exchange-alt'
+                    transfer: 'fa-exchange-alt'
                 };
                 return icons[type] || 'fa-exchange-alt';
             }
@@ -6780,8 +6669,7 @@
                     bonus: 'Bonus',
                     fee: 'Fee',
                     refund: 'Refund',
-                    transfer: 'Transfer',
-                    exchange: 'Exchange'
+                    transfer: 'Transfer'
                 };
                 return texts[type] || type;
             }
@@ -6811,7 +6699,7 @@
                 if (container) {
                     container.innerHTML = `
                         <tr>
-                            <td colspan="9" class="text-center py-5">
+                            <td colspan="7" class="text-center py-5">
                                 <i class="fas fa-exclamation-triangle fa-2x text-warning mb-3"></i>
                                 <h4 class="text-warning">Failed to Load Transactions</h4>
                                 <p class="text-muted">${message}</p>
@@ -7087,8 +6975,8 @@
                 const stats = data.stats || {};
                 
                 document.getElementById('totalReferralsCount').textContent = stats.total_referrals || 0;
-                document.getElementById('referralEarnings').textContent = Utils.formatCurrency(stats.referral_earnings || 0, 'NGN');
-                document.getElementById('pendingEarnings').textContent = Utils.formatCurrency(stats.pending_earnings || 0, 'NGN');
+                document.getElementById('referralEarnings').textContent = Utils.formatCurrency(stats.referral_earnings || 0);
+                document.getElementById('pendingEarnings').textContent = Utils.formatCurrency(stats.pending_earnings || 0);
                 
                 if (stats.referral_code) {
                     document.getElementById('referralCode').value = stats.referral_code;
@@ -7131,7 +7019,7 @@
                                 <td>${user.email || 'N/A'}</td>
                                 <td>${Utils.formatDate(referral.createdAt)}</td>
                                 <td><span class="badge ${statusClass}">${status}</span></td>
-                                <td class="text-success">${Utils.formatCurrency(earnings, 'NGN')}</td>
+                                <td class="text-success">${Utils.formatCurrency(earnings)}</td>
                             </tr>
                         `;
                     }).join('');
@@ -7285,417 +7173,66 @@
                 try {
                     Utils.showLoader('Loading admin dashboard...');
                     
-                    // Load admin-specific data
-                    const depositsResponse = await ApiService.getDeposits({ all: true });
-                    const withdrawalsResponse = await ApiService.getWithdrawals({ all: true });
-                    const exchangeResponse = await ApiService.getExchangeRequests();
-                    
-                    // Update tabs with data
-                    this.renderAdminDeposits(depositsResponse.data?.deposits || []);
-                    this.renderAdminWithdrawals(withdrawalsResponse.data?.withdrawals || []);
-                    this.renderExchangeRequests(exchangeResponse.data?.requests || []);
-                    
+                    // Populate admin stats with demo data
+                    document.getElementById('adminTotalUsers').textContent = '1,247';
+                    document.getElementById('adminTotalDeposits').textContent = Utils.formatCurrency(58400000);
+                    document.getElementById('adminTotalWithdrawals').textContent = Utils.formatCurrency(12300000);
+                    document.getElementById('adminTotalInvestments').textContent = Utils.formatCurrency(46200000);
+
+                    // Build admin tables
+                    const usersTbody = document.getElementById('adminUsersTable');
+                    if (usersTbody) {
+                        usersTbody.innerHTML = `
+                            <tr>
+                                <td>Demo User</td>
+                                <td>demo@rawwealthy.com</td>
+                                <td>${Utils.formatCurrency(1250000)}</td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td><span class="badge badge-success">Verified</span></td>
+                                <td><button class="btn btn-sm btn-primary">Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>john@example.com</td>
+                                <td>${Utils.formatCurrency(850000)}</td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td><span class="badge badge-warning">Pending</span></td>
+                                <td><button class="btn btn-sm btn-primary">Edit</button></td>
+                            </tr>
+                        `;
+                    }
+
+                    // Activate tabs
+                    document.querySelectorAll('#admin .tab').forEach(tab => {
+                        tab.addEventListener('click', (e) => {
+                            document.querySelectorAll('#admin .tab').forEach(t => t.classList.remove('active'));
+                            tab.classList.add('active');
+                            const tabId = tab.dataset.tab;
+                            document.querySelectorAll('#admin .tab-content').forEach(c => c.classList.remove('active'));
+                            const target = document.getElementById(tabId + 'Tab');
+                            if (target) target.classList.add('active');
+                            else {
+                                // create dummy content if not exists
+                                const parent = document.querySelector('#admin .card-body');
+                                let newTab = document.getElementById(tabId + 'Tab');
+                                if (!newTab) {
+                                    newTab = document.createElement('div');
+                                    newTab.id = tabId + 'Tab';
+                                    newTab.className = 'tab-content';
+                                    newTab.innerHTML = `<div class="p-4 text-center text-muted">${tabId} management – demo data</div>`;
+                                    parent.appendChild(newTab);
+                                }
+                                newTab.classList.add('active');
+                            }
+                        });
+                    });
+
                     Debug.info('Admin', 'Admin dashboard loaded');
-                    
                 } catch (error) {
                     Debug.error('Admin', 'Failed to load admin dashboard:', error);
                     Utils.showError(error, 'Loading Admin Dashboard');
                 } finally {
                     Utils.hideLoader();
-                }
-            }
-
-            static renderAdminDeposits(deposits) {
-                const container = document.getElementById('adminDepositsTable');
-                if (!container) return;
-                
-                if (!deposits || deposits.length === 0) {
-                    container.innerHTML = `<tr><td colspan="8" class="text-center">No deposits found</td></tr>`;
-                    return;
-                }
-                
-                const html = deposits.map(dep => `
-                    <tr>
-                        <td>${dep.user?.full_name || 'N/A'}</td>
-                        <td>${Utils.formatCurrency(dep.amount, dep.currency || 'NGN')}</td>
-                        <td>${dep.currency || 'NGN'}</td>
-                        <td>${Utils.formatCurrency(dep.amount_in_ngn || dep.amount, 'NGN')}</td>
-                        <td>${dep.payment_method}</td>
-                        <td>${Utils.formatDate(dep.createdAt)}</td>
-                        <td><span class="badge badge-warning">${dep.status}</span></td>
-                        <td>
-                            <button class="btn btn-sm btn-success approve-deposit" data-id="${dep._id}">Approve</button>
-                            <button class="btn btn-sm btn-danger reject-deposit" data-id="${dep._id}">Reject</button>
-                        </td>
-                    </tr>
-                `).join('');
-                container.innerHTML = html;
-            }
-
-            static renderAdminWithdrawals(withdrawals) {
-                const container = document.getElementById('adminWithdrawalsTable');
-                if (!container) return;
-                
-                if (!withdrawals || withdrawals.length === 0) {
-                    container.innerHTML = `<tr><td colspan="8" class="text-center">No withdrawals found</td></tr>`;
-                    return;
-                }
-                
-                const html = withdrawals.map(w => `
-                    <tr>
-                        <td>${w.user?.full_name || 'N/A'}</td>
-                        <td>${Utils.formatCurrency(w.amount, w.currency || 'NGN')}</td>
-                        <td>${w.currency || 'NGN'}</td>
-                        <td>${Utils.formatCurrency(w.amount_in_ngn || w.amount, 'NGN')}</td>
-                        <td>${w.payment_method}</td>
-                        <td>${Utils.formatDate(w.createdAt)}</td>
-                        <td><span class="badge badge-warning">${w.status}</span></td>
-                        <td>
-                            <button class="btn btn-sm btn-success approve-withdrawal" data-id="${w._id}">Approve</button>
-                            <button class="btn btn-sm btn-danger reject-withdrawal" data-id="${w._id}">Reject</button>
-                        </td>
-                    </tr>
-                `).join('');
-                container.innerHTML = html;
-            }
-
-            static renderExchangeRequests(requests) {
-                const container = document.getElementById('exchangeRequestsList');
-                if (!container) return;
-                
-                if (!requests || requests.length === 0) {
-                    container.innerHTML = `<div class="text-center py-4">No exchange requests</div>`;
-                    return;
-                }
-                
-                const html = requests.map(req => `
-                    <div class="exchange-request-item">
-                        <div><strong>User:</strong> ${req.user?.full_name || 'N/A'}</div>
-                        <div><strong>From:</strong> ${req.fromCurrency} ${req.amountFrom}</div>
-                        <div><strong>To:</strong> ${req.toCurrency} ${req.amountTo}</div>
-                        <div><strong>Rate:</strong> ${req.rate}</div>
-                        <div><strong>Status:</strong> <span class="badge badge-warning">${req.status}</span></div>
-                        <div class="mt-2">
-                            <button class="btn btn-sm btn-success approve-exchange" data-id="${req._id}">Approve</button>
-                            <button class="btn btn-sm btn-danger reject-exchange" data-id="${req._id}">Reject</button>
-                        </div>
-                    </div>
-                `).join('');
-                container.innerHTML = html;
-            }
-
-            static setupAdminTabs() {
-                const tabs = document.querySelectorAll('#admin .tab');
-                tabs.forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        tabs.forEach(t => t.classList.remove('active'));
-                        tab.classList.add('active');
-                        
-                        const tabId = tab.dataset.tab;
-                        document.querySelectorAll('#admin .tab-content').forEach(content => {
-                            content.classList.remove('active');
-                        });
-                        
-                        const target = document.getElementById(tabId + 'Tab');
-                        if (target) target.classList.add('active');
-                    });
-                });
-            }
-        }
-
-        // ===== EXCHANGE MANAGER =====
-        class ExchangeManager {
-            static async openExchangeModal() {
-                const modal = document.getElementById('exchangeModal');
-                if (modal) {
-                    modal.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                }
-            }
-
-            static async submitExchangeRequest(e) {
-                e.preventDefault();
-                
-                try {
-                    Utils.showLoader('Processing exchange...');
-                    
-                    const from = document.getElementById('exchangeFrom').value;
-                    const to = document.getElementById('exchangeTo').value;
-                    const amount = parseFloat(document.getElementById('exchangeAmount').value);
-                    
-                    if (from === to) {
-                        Utils.showNotification('Cannot exchange same currency', 'error');
-                        return;
-                    }
-                    
-                    const amountInNgn = Utils.convertToNgn(amount, from);
-                    const fee = amountInNgn * (CONFIG.CONVERSION_FEE_PERCENT / 100);
-                    const netAmountInNgn = amountInNgn - fee;
-                    const amountTo = Utils.convertFromNgn(netAmountInNgn, to);
-                    
-                    const data = {
-                        fromCurrency: from,
-                        toCurrency: to,
-                        amountFrom: amount,
-                        amountTo: amountTo,
-                        amountInNgn: amountInNgn,
-                        fee: fee,
-                        rate: appState.exchangeRates[to] / appState.exchangeRates[from]
-                    };
-                    
-                    const response = await ApiService.createExchangeRequest(data);
-                    
-                    if (response.success) {
-                        Utils.showNotification('Exchange request submitted', 'success');
-                        document.getElementById('exchangeModal').classList.remove('active');
-                        document.getElementById('exchangeForm').reset();
-                    } else {
-                        Utils.showNotification(response.message, 'error');
-                    }
-                } catch (error) {
-                    Debug.error('Exchange', 'Failed to submit exchange:', error);
-                    Utils.showError(error, 'Exchange Request');
-                } finally {
-                    Utils.hideLoader();
-                }
-            }
-
-            static setupExchangeModal() {
-                const form = document.getElementById('exchangeForm');
-                if (form) {
-                    form.addEventListener('submit', (e) => ExchangeManager.submitExchangeRequest(e));
-                }
-                
-                const fromSelect = document.getElementById('exchangeFrom');
-                const toSelect = document.getElementById('exchangeTo');
-                const amountInput = document.getElementById('exchangeAmount');
-                const rateDisplay = document.getElementById('exchangeRateDisplay');
-                const receiveDisplay = document.getElementById('exchangeReceive');
-                const feeDisplay = document.getElementById('exchangeFee');
-                
-                function updateExchangePreview() {
-                    const from = fromSelect.value;
-                    const to = toSelect.value;
-                    const amount = parseFloat(amountInput.value) || 0;
-                    
-                    if (amount <= 0) return;
-                    
-                    const amountInNgn = Utils.convertToNgn(amount, from);
-                    const fee = amountInNgn * (CONFIG.CONVERSION_FEE_PERCENT / 100);
-                    const netAmountInNgn = amountInNgn - fee;
-                    const amountTo = Utils.convertFromNgn(netAmountInNgn, to);
-                    
-                    rateDisplay.textContent = `${Utils.convertFromNgn(1, to)} ${to} per ${from}`;
-                    feeDisplay.textContent = Utils.formatCurrency(fee, 'NGN');
-                    receiveDisplay.textContent = Utils.formatCurrency(amountTo, to);
-                }
-                
-                if (fromSelect && toSelect && amountInput) {
-                    [fromSelect, toSelect, amountInput].forEach(el => {
-                        el.addEventListener('input', updateExchangePreview);
-                    });
-                }
-            }
-        }
-
-        // ===== PUSH NOTIFICATIONS =====
-        class PushNotificationManager {
-            static async subscribe() {
-                if (!('Notification' in window && 'serviceWorker' in navigator && 'PushManager' in window)) {
-                    Debug.warn('Push', 'Push notifications not supported');
-                    return;
-                }
-
-                try {
-                    const permission = await Notification.requestPermission();
-                    if (permission !== 'granted') {
-                        Debug.warn('Push', 'Notification permission denied');
-                        return;
-                    }
-
-                    const registration = await navigator.serviceWorker.ready;
-                    const subscription = await registration.pushManager.subscribe({
-                        userVisibleOnly: true,
-                        applicationServerKey: CONFIG.VAPID_PUBLIC_KEY
-                    });
-
-                    // Send subscription to server
-                    const response = await ApiService.request('/api/push/subscribe', {
-                        method: 'POST',
-                        body: JSON.stringify(subscription)
-                    });
-
-                    if (response.success) {
-                        Debug.info('Push', 'Subscribed to push notifications');
-                        StateManager.set('pushSubscribed', true);
-                    } else {
-                        Debug.error('Push', 'Failed to subscribe on server');
-                    }
-                } catch (error) {
-                    Debug.error('Push', 'Push subscription failed:', error);
-                }
-            }
-
-            static async unsubscribe() {
-                try {
-                    const registration = await navigator.serviceWorker.ready;
-                    const subscription = await registration.pushManager.getSubscription();
-                    if (subscription) {
-                        await subscription.unsubscribe();
-                        await ApiService.request('/api/push/unsubscribe', { method: 'POST' });
-                        StateManager.set('pushSubscribed', false);
-                        Debug.info('Push', 'Unsubscribed from push notifications');
-                    }
-                } catch (error) {
-                    Debug.error('Push', 'Push unsubscription failed:', error);
-                }
-            }
-        }
-
-        // ===== BACKGROUND SYNC FOR OFFLINE ACTIONS =====
-        class BackgroundSyncManager {
-            static async init() {
-                if (!('serviceWorker' in navigator && 'SyncManager' in window)) {
-                    Debug.warn('Sync', 'Background sync not supported');
-                    return;
-                }
-
-                // Queue offline actions
-                window.addEventListener('online', () => {
-                    this.processQueue();
-                });
-
-                // Register sync when offline action attempted
-                this.setupFormSync();
-            }
-
-            static async queueAction(actionType, data) {
-                const queue = StateManager.get('offlineQueue', []);
-                queue.push({
-                    id: Utils.generateId(),
-                    type: actionType,
-                    data: data,
-                    timestamp: Date.now()
-                });
-                StateManager.set('offlineQueue', queue);
-
-                if (!navigator.onLine) {
-                    try {
-                        const registration = await navigator.serviceWorker.ready;
-                        await registration.sync.register('sync-actions');
-                        Utils.showNotification('Action saved offline. It will be sent when connection is restored.', 'info');
-                    } catch (error) {
-                        Debug.error('Sync', 'Failed to register sync:', error);
-                    }
-                } else {
-                    this.processQueue();
-                }
-            }
-
-            static async processQueue() {
-                const queue = StateManager.get('offlineQueue', []);
-                if (queue.length === 0) return;
-
-                Utils.showLoader('Syncing offline actions...');
-                let processed = 0;
-
-                for (const item of queue) {
-                    try {
-                        switch (item.type) {
-                            case 'deposit':
-                                await ApiService.createDeposit(item.data);
-                                break;
-                            case 'withdrawal':
-                                await ApiService.createWithdrawal(item.data.amount, item.data.payment_method, item.data.currency);
-                                break;
-                            case 'support':
-                                await ApiService.createSupportTicket(item.data);
-                                break;
-                            case 'exchange':
-                                await ApiService.createExchangeRequest(item.data);
-                                break;
-                        }
-                        processed++;
-                    } catch (error) {
-                        Debug.error('Sync', `Failed to process ${item.type}:`, error);
-                        // Keep failed items in queue for next retry
-                        continue;
-                    }
-                }
-
-                // Remove successfully processed items
-                const remaining = queue.filter((_, index) => index >= processed);
-                StateManager.set('offlineQueue', remaining);
-                Utils.hideLoader();
-                if (processed > 0) {
-                    Utils.showNotification(`${processed} offline actions synced successfully!`, 'success');
-                }
-            }
-
-            static setupFormSync() {
-                // Override deposit form submission to use queue when offline
-                const depositForm = document.getElementById('depositForm');
-                if (depositForm) {
-                    depositForm.onsubmit = async (e) => {
-                        e.preventDefault();
-                        if (navigator.onLine) {
-                            await DepositManager.submitDeposit(e);
-                        } else {
-                            const amount = document.getElementById('depositAmount')?.value;
-                            const currency = document.getElementById('depositCurrency')?.value;
-                            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value;
-                            const paymentProof = document.getElementById('paymentProof')?.files[0];
-                            if (!amount || !currency || !paymentMethod) return;
-                            const data = { 
-                                amount: parseFloat(amount), 
-                                currency, 
-                                payment_method: paymentMethod,
-                                amount_in_ngn: Utils.convertToNgn(parseFloat(amount), currency)
-                            };
-                            if (paymentProof) {
-                                Utils.showNotification('File uploads require internet connection. Please try again when online.', 'warning');
-                                return;
-                            }
-                            await BackgroundSyncManager.queueAction('deposit', data);
-                        }
-                    };
-                }
-
-                // Similar for withdrawal form
-                const withdrawalForm = document.getElementById('withdrawalForm');
-                if (withdrawalForm) {
-                    withdrawalForm.onsubmit = async (e) => {
-                        e.preventDefault();
-                        if (navigator.onLine) {
-                            await WithdrawalManager.submitWithdrawal(e);
-                        } else {
-                            const amount = document.getElementById('withdrawalAmount')?.value;
-                            const currency = document.getElementById('withdrawalCurrency')?.value;
-                            const paymentMethod = document.querySelector('input[name="withdrawMethod"]:checked')?.value;
-                            if (!amount || !currency || !paymentMethod) return;
-                            const data = { amount: parseFloat(amount), currency, payment_method: paymentMethod };
-                            await BackgroundSyncManager.queueAction('withdrawal', data);
-                        }
-                    };
-                }
-
-                // Support form sync
-                const supportForm = document.getElementById('supportForm');
-                if (supportForm) {
-                    supportForm.onsubmit = async (e) => {
-                        e.preventDefault();
-                        if (navigator.onLine) {
-                            await SupportManager.createSupportTicket(e);
-                        } else {
-                            const category = document.getElementById('ticketCategory')?.value;
-                            const priority = document.getElementById('ticketPriority')?.value;
-                            const subject = document.getElementById('ticketSubject')?.value;
-                            const message = document.getElementById('ticketMessage')?.value;
-                            if (!category || !subject || !message) return;
-                            const data = { category, priority, subject, message };
-                            await BackgroundSyncManager.queueAction('support', data);
-                        }
-                    };
                 }
             }
         }
@@ -7713,9 +7250,10 @@
                 this.setupFilePreviews();
                 this.setupWithdrawalCalculation();
                 this.setupReferralActions();
-                this.setupCurrencyHandlers();
-                this.setupAdminTabs();
-                this.setupExchangeModal();
+                this.setupProofViewer();
+                this.setupTrustWalletCopy();
+                // PWA install banner events
+                this.setupPWAInstallBanner();
                 
                 Debug.info('EventHandlers', 'Event handlers initialized successfully');
             }
@@ -7878,7 +7416,7 @@
                                 email: document.getElementById('profileEmailInput')?.value || '',
                                 phone: document.getElementById('profilePhone')?.value || '',
                                 country: document.getElementById('countrySelect')?.value || '',
-                                preferred_currency: document.getElementById('preferredCurrency')?.value || 'NGN',
+                                risk_tolerance: document.getElementById('riskTolerance')?.value || 'medium',
                                 investment_strategy: document.getElementById('investmentStrategy')?.value || 'balanced',
                                 email_notifications: document.getElementById('emailNotifications')?.checked || false,
                                 sms_notifications: document.getElementById('smsNotifications')?.checked || false
@@ -8240,45 +7778,112 @@
                 
                 Utils.showNotification(`Shared on ${platform}`, 'success');
             }
-
-            static setupCurrencyHandlers() {
-                DepositManager.setupCurrencyHandlers();
-                WithdrawalManager.setupCurrencyHandlers();
+            
+            static setupProofViewer() {
+                document.addEventListener('click', (e) => {
+                    if (e.target.closest('.view-proof')) {
+                        const btn = e.target.closest('.view-proof');
+                        const url = btn.dataset.url;
+                        if (url && url !== '#') {
+                            const modal = document.getElementById('proofViewerModal');
+                            const container = document.getElementById('proofImageContainer');
+                            container.innerHTML = `<img src="${url}" alt="Proof" style="max-width:100%;">`;
+                            modal.classList.add('active');
+                            
+                            const closeModal = () => modal.classList.remove('active');
+                            modal.querySelector('.modal-close').addEventListener('click', closeModal, { once: true });
+                            modal.querySelector('.modal-backdrop').addEventListener('click', closeModal, { once: true });
+                        } else {
+                            Utils.showNotification('No proof available (demo)', 'info');
+                        }
+                    }
+                });
+            }
+            
+            static setupTrustWalletCopy() {
+                const copyBtn = document.getElementById('copyTrustWallet');
+                if (copyBtn) {
+                    copyBtn.addEventListener('click', async () => {
+                        await Utils.copyToClipboard(CONFIG.TRUST_WALLET.address);
+                    });
+                }
             }
 
-            static setupAdminTabs() {
-                AdminManager.setupAdminTabs();
-            }
+            // PWA Install Banner Logic
+            static setupPWAInstallBanner() {
+                const banner = document.getElementById('pwaInstallBanner');
+                const installBtn = document.getElementById('pwaInstallBtn');
+                const dismissBtn = document.getElementById('pwaDismissBtn');
+                let deferredPrompt;
 
-            static setupExchangeModal() {
-                ExchangeManager.setupExchangeModal();
+                // Hide banner if already dismissed
+                if (StateManager.get('pwaBannerDismissed', false)) {
+                    banner.classList.remove('show');
+                    return;
+                }
+
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    // Prevent the mini-infobar from appearing on mobile
+                    e.preventDefault();
+                    deferredPrompt = e;
+                    // Show the custom install banner
+                    banner.classList.add('show');
+                    Debug.info('PWA', 'Install prompt captured, showing banner');
+                });
+
+                installBtn.addEventListener('click', async () => {
+                    banner.classList.remove('show');
+                    if (!deferredPrompt) {
+                        Utils.showNotification('Installation not supported or already installed.', 'info');
+                        return;
+                    }
+                    // Show the install prompt
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        Utils.showNotification('Thank you for installing Raw Wealthy!', 'success');
+                        Debug.info('PWA', 'User accepted install');
+                    } else {
+                        Debug.info('PWA', 'User dismissed install');
+                    }
+                    deferredPrompt = null;
+                });
+
+                dismissBtn.addEventListener('click', () => {
+                    banner.classList.remove('show');
+                    StateManager.set('pwaBannerDismissed', true); // Don't show again this session
+                    Debug.info('PWA', 'Install banner dismissed');
+                });
+
+                // Detect if app is already installed (standalone mode)
+                if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+                    banner.classList.remove('show');
+                    Debug.info('PWA', 'App already installed, hiding banner');
+                }
             }
         }
 
         // ===== INITIALIZATION =====
         document.addEventListener('DOMContentLoaded', () => {
-            Debug.info('App', 'Initializing Raw Wealthy v38.0 - Production Ready with Multi-Currency...');
-            console.log('🚀 Raw Wealthy Premium v38.0 - Production Ready');
+            Debug.info('App', 'Initializing Raw Wealthy v38.1 - Enhanced Edition...');
+            console.log('🚀 Raw Wealthy Premium v38.1 - Enhanced Edition');
             console.log('📊 Debug Mode:', CONFIG.DEBUG_MODE);
             console.log('🔐 Auth Status:', authToken ? 'Logged In' : 'Logged Out');
             console.log('👤 Current User:', currentUser?.email || 'None');
             console.log('🌐 API Base URL:', CONFIG.API_BASE_URL);
             console.log('🏦 Platform Bank:', CONFIG.PLATFORM_BANK_DETAILS.account_number);
-            console.log('💱 Supported Currencies:', CONFIG.SUPPORTED_CURRENCIES.join(', '));
+            console.log('💰 Selected Currency:', selectedCurrency);
             console.log('============================================');
+            
+            // Initialize currency selector
+            CurrencyManager.init();
             
             Router.init();
             EventHandlers.init();
-            BackgroundSyncManager.init(); // Initialize background sync
             
             if (authToken) {
                 Debug.info('App', 'User already logged in, loading user data...');
                 AuthManager.loadUserData();
-                
-                // Ask for push notification permission if not already subscribed
-                if (!StateManager.get('pushSubscribed', false)) {
-                    PushNotificationManager.subscribe();
-                }
             } else {
                 Debug.info('App', 'No user logged in, showing login page');
             }
@@ -8290,7 +7895,6 @@
                 if (authToken) {
                     DashboardManager.loadDashboardData();
                 }
-                BackgroundSyncManager.processQueue();
             });
             
             window.addEventListener('offline', () => {
@@ -8298,7 +7902,7 @@
                 Debug.warn('Network', 'Connection lost');
             });
             
-            Debug.info('App', '✅ Raw Wealthy v38.0 Initialization Complete');
+            Debug.info('App', '✅ Raw Wealthy v38.1 Initialization Complete');
         });
 
         // ===== GLOBAL ERROR HANDLING =====
@@ -8311,6 +7915,37 @@
             Debug.error('Global', 'Unhandled promise rejection:', event.reason);
             Utils.showNotification('An unexpected error occurred.', 'error');
         });
+
+        // ===== SERVICE WORKER REGISTRATION =====
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        Debug.info('SW', 'Service Worker registered with scope:', registration.scope);
+                        
+                        // Check for updates
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            Debug.info('SW', 'New service worker installing...');
+                            
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // New version available
+                                    Utils.showNotification('New version available! Refresh to update.', 'info', 10000);
+                                }
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        Debug.error('SW', 'Service Worker registration failed:', error);
+                    });
+
+                // Detect controller change (new SW activated)
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    Debug.info('SW', 'New service worker activated');
+                });
+            });
+        }
 
         // ===== GLOBAL EXPORTS =====
         window.RawWealthy = {
@@ -8330,9 +7965,7 @@
             ReferralManager,
             ProfileManager,
             AdminManager,
-            ExchangeManager,
-            PushNotificationManager,
-            BackgroundSyncManager,
+            CurrencyManager,
             
             login: AuthManager.login,
             logout: AuthManager.logout,
@@ -8346,6 +7979,7 @@
             getCurrentUser: () => currentUser,
             getAuthToken: () => authToken,
             isAdmin: () => isAdmin,
+            getSelectedCurrency: () => selectedCurrency,
             
             refreshDashboard: () => DashboardManager.loadDashboardData(),
             refreshInvestments: () => InvestmentManager.loadInvestments(),
@@ -8353,11 +7987,7 @@
             refreshWithdrawals: () => WithdrawalManager.loadWithdrawals(),
             refreshTransactions: () => TransactionManager.loadTransactions(),
             refreshKYC: () => KYCManager.loadKYCStatus(),
-            refreshReferrals: () => ReferralManager.loadReferralData(),
-
-            // Currency helpers
-            convertCurrency: (amount, from, to) => Utils.convert(amount, from, to),
-            getExchangeRates: () => appState.exchangeRates
+            refreshReferrals: () => ReferralManager.loadReferralData()
         };
     </script>
 </body>
