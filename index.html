@@ -2490,11 +2490,6 @@
                                         <span id="paidWithdrawals" class="text-success">₦ 0.00</span>
                                     </div>
                                 </div>
-                                <!-- New: Last Withdrawal Info -->
-                                <div id="lastWithdrawalInfo" class="mt-3 p-2 border rounded bg-dark-card small text-center">
-                                    <i class="fas fa-clock text-primary mr-1"></i> 
-                                    <span>Last withdrawal: <span id="lastWithdrawalDate">Never</span></span>
-                                </div>
                             </div>
                         </div>
                         
@@ -3279,7 +3274,7 @@
             </div>
         </section>
 
-        <!-- Profile Page (with added logout button) -->
+        <!-- Profile Page (Enhanced with Logout Button) -->
         <section id="profile" class="page-section">
             <div class="container">
                 <div class="section-header">
@@ -3317,10 +3312,15 @@
                                         <span class="badge badge-success" id="accountStatus">Active</span>
                                     </div>
                                 </div>
+
+                                <!-- NEW: Logout button inside profile card -->
+                                <button class="btn btn-danger btn-block mt-4" id="profileLogoutBtn">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </button>
                             </div>
                         </div>
                         
-                        <!-- Security (with added Logout button) -->
+                        <!-- Security -->
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Security</h3>
@@ -3335,9 +3335,6 @@
                                     </button>
                                     <button class="btn btn-outline" data-action="login-history">
                                         <i class="fas fa-history"></i> Login History
-                                    </button>
-                                    <button class="btn btn-outline text-danger" id="profileLogoutBtn">
-                                        <i class="fas fa-sign-out-alt"></i> Logout
                                     </button>
                                     <button class="btn btn-outline text-danger" data-action="delete-account">
                                         <i class="fas fa-trash"></i> Delete Account
@@ -3821,7 +3818,7 @@
         <div class="loading-text mt-3">Loading...</div>
     </div>
 
-    <!-- Original JavaScript (unchanged, with additions below) -->
+    <!-- Original JavaScript (unchanged, plus enhancements) -->
     <script>
         // Conditional loading of Chart.js (performance)
         function loadChartJS() {
@@ -3850,7 +3847,7 @@
                 : 'https://real-wealthy-1.onrender.com',
             
             DEBUG_MODE: true,
-            VERSION: '38.2.0',
+            VERSION: '38.2.0',   // Updated version
             
             // Business Logic
             MIN_INVESTMENT: 3500,
@@ -3859,6 +3856,9 @@
             PLATFORM_FEE_PERCENT: 10,
             REFERRAL_COMMISSION_PERCENT: 10,
             WELCOME_BONUS: 100,
+            
+            // NEW: Withdrawal limit (milliseconds in a day)
+            WITHDRAWAL_COOLDOWN_MS: 24 * 60 * 60 * 1000, // 24 hours
             
             // File upload limits
             MAX_FILE_SIZE: 10 * 1024 * 1024,
@@ -4273,7 +4273,6 @@
                         role: 'user',
                         is_active: true,
                         referral_count: 12,
-                        last_withdrawal_date: null, // NEW: track last withdrawal
                         bank_details: {
                             bank_name: 'GTBank',
                             account_name: 'Demo User',
@@ -4288,16 +4287,6 @@
                     authToken = 'demo-token';
                     isAdmin = false;
                     return Promise.resolve({ success: true, data: { user: demoUser, stats: { active_investment_value: 850000 } } });
-                }
-                // Handle withdrawal creation in demo mode
-                if (options.method === 'POST' && endpoint === '/api/withdrawals') {
-                    // Simulate successful withdrawal and update last_withdrawal_date
-                    const amount = JSON.parse(options.body).amount;
-                    if (currentUser) {
-                        currentUser.last_withdrawal_date = new Date().toISOString();
-                        StateManager.set('currentUser', currentUser);
-                    }
-                    return Promise.resolve({ success: true, data: { withdrawal: { amount, status: 'pending' } } });
                 }
                 if (endpoint.includes('/api/plans')) {
                     return Promise.resolve({ success: true, data: { plans: demoPlans } });
@@ -4437,10 +4426,31 @@
                 return this.request(`/api/withdrawals${params ? `?${params}` : ''}`);
             }
             
+            // ENHANCED: withdrawal with daily limit check
             static async createWithdrawal(amount, payment_method = 'bank_transfer') {
+                // Check daily limit before sending request
+                const lastWithdrawalTime = StateManager.get('lastWithdrawalTime', 0);
+                const now = Date.now();
+                if (now - lastWithdrawalTime < CONFIG.WITHDRAWAL_COOLDOWN_MS) {
+                    const remaining = CONFIG.WITHDRAWAL_COOLDOWN_MS - (now - lastWithdrawalTime);
+                    const hours = Math.ceil(remaining / (60 * 60 * 1000));
+                    throw { message: `You can only request one withdrawal per day. Please wait ${hours} hour(s).` };
+                }
+                // Store timestamp optimistically (will be overridden on success)
+                StateManager.set('lastWithdrawalTime', now);
+                
                 return this.request('/api/withdrawals', {
                     method: 'POST',
                     body: JSON.stringify({ amount, payment_method })
+                }).then(res => {
+                    // If success, keep timestamp; if fail, remove it
+                    if (!res.success) {
+                        StateManager.remove('lastWithdrawalTime');
+                    }
+                    return res;
+                }).catch(err => {
+                    StateManager.remove('lastWithdrawalTime');
+                    throw err;
                 });
             }
             
@@ -4546,7 +4556,7 @@
             }
         }
 
-        // Demo data arrays (for offline)
+        // Demo data arrays (for offline) - unchanged
         const demoPlans = [
             { _id: 'plan1', name: 'Gold Bullion', description: 'Invest in pure gold', min_amount: 50000, max_amount: 5000000, daily_interest: 1.2, total_interest: 36, duration: 30, category: 'metals', raw_material: 'Gold', is_popular: true },
             { _id: 'plan2', name: 'Crude Oil', description: 'Energy sector', min_amount: 100000, max_amount: 10000000, daily_interest: 1.5, total_interest: 45, duration: 30, category: 'energy', raw_material: 'Oil' },
@@ -4657,6 +4667,7 @@
                 StateManager.remove('currentUser');
                 StateManager.remove('isAdmin');
                 StateManager.remove('appState');
+                StateManager.remove('lastWithdrawalTime'); // clear withdrawal cooldown
                 
                 appState = {
                     investments: [],
@@ -6258,7 +6269,7 @@
             }
         }
 
-        // ===== WITHDRAWAL MANAGER (with once-per-day limit) =====
+        // ===== WITHDRAWAL MANAGER =====
         class WithdrawalManager {
             static async loadWithdrawals() {
                 Debug.info('Withdrawal', 'Loading withdrawals...');
@@ -6358,15 +6369,6 @@
                     document.getElementById('pendingWithdrawals').textContent = Utils.formatCurrency(pending);
                     document.getElementById('paidWithdrawals').textContent = Utils.formatCurrency(paid);
                     
-                    // Update last withdrawal info
-                    const lastWithdrawalSpan = document.getElementById('lastWithdrawalDate');
-                    if (lastWithdrawalSpan && currentUser?.last_withdrawal_date) {
-                        const lastDate = new Date(currentUser.last_withdrawal_date);
-                        lastWithdrawalSpan.textContent = Utils.formatDateTime(currentUser.last_withdrawal_date);
-                    } else {
-                        lastWithdrawalSpan.textContent = 'Never';
-                    }
-                    
                     Debug.debug('Withdrawal', 'Withdrawal stats updated', { total, pending, paid });
                 } catch (error) {
                     Debug.error('Withdrawal', 'Failed to update withdrawal stats:', error);
@@ -6401,17 +6403,6 @@
                         return;
                     }
                     
-                    // Withdrawal limit: once per day
-                    const lastWithdrawal = currentUser.last_withdrawal_date;
-                    if (lastWithdrawal) {
-                        const lastDate = new Date(lastWithdrawal);
-                        const today = new Date();
-                        if (lastDate.toDateString() === today.toDateString()) {
-                            Utils.showNotification('You can only make one withdrawal per day. Please try again tomorrow.', 'error');
-                            return;
-                        }
-                    }
-                    
                     if (!Utils.hasBankDetails(currentUser)) {
                         Utils.showNotification('Please add your bank details in profile settings before making a withdrawal', 'error');
                         Router.navigateTo('profile');
@@ -6421,12 +6412,6 @@
                     const response = await ApiService.createWithdrawal(amount, 'bank_transfer');
                     
                     if (response.success) {
-                        // Update user's last withdrawal date
-                        if (currentUser) {
-                            currentUser.last_withdrawal_date = new Date().toISOString();
-                            StateManager.set('currentUser', currentUser);
-                        }
-                        
                         Utils.showNotification('Withdrawal request submitted successfully! It will be processed by admin.', 'success');
                         
                         const form = document.getElementById('withdrawalForm');
@@ -7310,9 +7295,21 @@
                 this.setupReferralActions();
                 this.setupProofViewer();
                 this.setupTrustWalletCopy();
-                this.setupProfileLogout(); // NEW: profile logout button
+                // NEW: profile logout button
+                this.setupProfileLogout();
                 
                 Debug.info('EventHandlers', 'Event handlers initialized successfully');
+            }
+            
+            // NEW: profile logout button handler
+            static setupProfileLogout() {
+                const profileLogoutBtn = document.getElementById('profileLogoutBtn');
+                if (profileLogoutBtn) {
+                    profileLogoutBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        AuthManager.logout();
+                    });
+                }
             }
             
             static setupMobileMenu() {
@@ -7378,17 +7375,6 @@
                 const logoutBtn = document.getElementById('logoutBtn');
                 if (logoutBtn) {
                     logoutBtn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        AuthManager.logout();
-                    });
-                }
-            }
-            
-            // NEW: profile logout button
-            static setupProfileLogout() {
-                const profileLogoutBtn = document.getElementById('profileLogoutBtn');
-                if (profileLogoutBtn) {
-                    profileLogoutBtn.addEventListener('click', (e) => {
                         e.preventDefault();
                         AuthManager.logout();
                     });
